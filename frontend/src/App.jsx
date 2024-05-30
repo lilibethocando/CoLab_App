@@ -1,30 +1,25 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+import Navbar from './components/NavBar';
+import LandingPage from './pages/LandingPage';
+import SignUp from './pages/SignUpPage';
+import SignIn from './pages/SignInPage';
+import TopSection from './components/TopSection';
 
-function App() {
-  const [htmlContent, setHtmlContent] = useState('');
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    axios.get('http://localhost:5000/')
-      .then(response => {
-        setHtmlContent(response.data);
-      })
-      .catch(error => {
-        setError(error.message);
-      });
-  }, []);
+const App = () => {
 
   return (
-    <div className="App">
-      {error ? (
-        <div>Error: {error}</div>
-      ) : (
-        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-      )}
-    </div>
+    <BrowserRouter>
+      <Navbar />
+
+        <Routes>
+        <Route path="/" element={<LandingPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+        </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
