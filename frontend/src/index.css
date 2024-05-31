@@ -66,3 +66,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+.background-image {
+  background-image: url('./assets/bg_si_su.png');
+  background-size: cover;
+}

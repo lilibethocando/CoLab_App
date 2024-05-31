@@ -18,7 +18,9 @@ const NavBar = () => {
                 <div className="flex justify-between items-center">
                     <div className="flex items-center flex-shrink-0">
                         <img className="h-12 w-12 mr-2" src={logo} alt="Company Logo" />
-                        <span className="text-xl tracking-tight">TripPlanner</span>
+                        <Link to="/" className="text-black">
+                <span className="text-xl tracking-tight">TripPlanner</span>
+            </Link>
                     </div>
                     {/* <ul className='hidden lg:flex ml-14 space-x-12'>
                         {navItems.map((item, index) => (
