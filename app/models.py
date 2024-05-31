@@ -21,3 +21,5 @@ class User(db.Model):
             "password": self.password,
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S')
         }
+    
+    
