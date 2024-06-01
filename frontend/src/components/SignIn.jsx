@@ -33,7 +33,7 @@ const SignIn = () => {
             setErrorMessage(''); // Clear any previous errors
 
             // Redirect to the main page
-            navigate('#'); // Placeholder route for the main page
+            navigate('/test'); // Placeholder route for the main page
         } catch (error) {
             console.error(error.response.data);
             setSuccessMessage(''); // Clear any previous success messages

@@ -6,6 +6,8 @@ import LandingPage from './pages/LandingPage';
 import SignUp from './pages/SignUpPage';
 import SignIn from './pages/SignInPage';
 import TopSection from './components/TopSection';
+import PopularDestinations from './components/PopularDestinations';
+import TestPage from './pages/TestPage';
 
 const App = () => {
 
@@ -17,6 +19,8 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/" element={<PopularDestinations />} />
+          <Route path="/test" element={<TestPage />} />
         </Routes>
     </BrowserRouter>
   );

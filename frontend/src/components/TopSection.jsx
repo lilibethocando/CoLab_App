@@ -18,7 +18,7 @@ export const TopSection = () => {
                     </div>
                     <div className="mt-10">
                         <Link to="/signin">
-                            <button className="py-3 px-6 bg-blue-800 text-white font-medium rounded-lg border-transparent">Get Started</button>
+                            <button className="py-3 px-6 text-white font-medium rounded-lg border-transparent" style={{background: '#235778'}}>Get Started</button>
 
                         </Link>
                     </div>
