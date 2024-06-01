@@ -7,27 +7,21 @@ export const TopSection = () => {
     };
 
     return (
-        <div className="bg-gray-100 h-screen flex items-center justify-center">
-            {/* Big white box */}
-            <div className="w-full h-full bg-white shadow-md rounded-lg overflow-hidden">
-                {/* Gray box */}
-                <div className="w-1/2 h-full bg-gray-100 flex flex-col items-start justify-start p-10">
-                    <div className="text-black font-roboto">
-                        <h1 className="text-5xl font-bold leading-tight mb-4">Plan Your Dream Trip with TripPlanner</h1>
-                        <p className="text-xl leading-6">Create your ideal itinerary and plan a trip with ease</p>
-                    </div>
-                    <div className="mt-10">
-                        <Link to="/signin">
-                            <button className="py-3 px-6 text-white font-medium rounded-lg border-transparent" style={{background: '#235778'}}>Get Started</button>
-
-                        </Link>
-                    </div>
+        <div className="flex mb-20"> 
+            <div className="w-1/2 h-full bg-white flex flex-col items-start justify-start p-10">
+                <div className="text-black font-roboto">
+                    <h1 className="text-5xl font-bold leading-tight mb-4">Plan Your Dream Trip with <br/> TripPlanner</h1>
+                    <p className="text-xl leading-6">Create your ideal itinerary and plan a <br/> trip with ease</p>
                 </div>
-                {/* White content box */}
-                <div className="w-1/2 h-full flex items-center justify-center">
-                    {/* Your content for the white box goes here */}
+                <div className="mt-10">
+                    <Link to="/signin">
+                        <button className="py-2 px-6 text-white font-medium rounded-lg border-transparent" style={{ background: '#235778' }}>
+                            Get Started
+                        </button>
+                    </Link>
                 </div>
             </div>
+            <img src="/temp.png" alt="image" className="w-1/2 object-cover"/>
         </div>
     );
 };
