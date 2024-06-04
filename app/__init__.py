@@ -8,7 +8,7 @@ from app.config import Config
 import os
 
 
-app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
 CORS(app, supports_credentials=True)
 bcrypt = Bcrypt(app)
 
@@ -22,13 +22,10 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    if path != "" and os.path.exists(app.static_folder + '/' + path):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
 
 from . import models
 
