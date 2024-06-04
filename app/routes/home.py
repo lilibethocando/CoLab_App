@@ -10,5 +10,5 @@ from app import app
 # bundle_hash = js_bundle_filename.split('-')[1]
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
