@@ -24,7 +24,7 @@ migrate = Migrate(app, db)
 
 @app.route('/')
 @cross_origin()
-def index():
+def serve():
     return app.send_static_file('index.html')
 
 from . import models
