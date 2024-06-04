@@ -8,7 +8,7 @@ from app.config import Config
 import os
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
 CORS(app, supports_credentials=True)
 bcrypt = Bcrypt(app)
 
@@ -21,6 +21,11 @@ app.secret_key = os.environ.get('SECRET_KEY')
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
+
+@app.route('/')
+@cross_origin()
+def index():
+    return app.send_static_file('index.html')
 
 from . import models
 
