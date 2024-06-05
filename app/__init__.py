@@ -22,6 +22,9 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
+from app.routes import home, auth, itinerary_bp
+app.register_blueprint(itinerary_bp)
+
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
