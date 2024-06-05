@@ -8,6 +8,7 @@ import SignIn from './pages/SignInPage';
 import TopSection from './components/TopSection';
 import PopularDestinations from './components/PopularDestinations';
 import TestPage from './pages/TestPage';
+import ItineraryPage from './pages/ItineraryPage';
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/" element={<PopularDestinations />} />
           <Route path="/test" element={<TestPage />} />
+          <Route path="/itinerary" element={<ItineraryPage />} />
         </Routes>
     </BrowserRouter>
   );
