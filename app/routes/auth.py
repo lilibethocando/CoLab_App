@@ -1,14 +1,19 @@
-from flask import request, jsonify, session, redirect, url_for
+from flask import Blueprint, request, jsonify, session, redirect, url_for
+from flask_cors import CORS, cross_origin
 from functools import wraps
 from app import app, db, bcrypt
 from app.models import User
+
+
+auth = Blueprint('auth', __name__)
 
 @app.route('/users')
 def users():
     pass
 
 
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 def signup():
     data = request.get_json()
     email = data.get("email")
@@ -31,7 +36,8 @@ def signup():
     return jsonify({"message": "User created successfully", "new_user": {"id": new_user.id, "email": new_user.email}}), 201
 
 
-@app.route('/signin', methods=["POST"])
+@app.route('/signin', methods=['POST', 'OPTIONS'])
+@cross_origin(supports_credentials=True)
 def signin():
     data = request.get_json()
     email = data.get("email")
@@ -60,6 +66,7 @@ def login_required(f):
     
 
 @app.route('/protected', methods=["GET"])
+@cross_origin(supports_credentials=True)
 @login_required
 def protected():
     return jsonify({"message": "This is a protected route accessible only to logged-in users."})
@@ -80,6 +87,7 @@ def get_current_user():
 
 
 @app.route("/signout", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def logout_user():
     session.pop("user_id")
     return "200"

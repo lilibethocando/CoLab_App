@@ -27,7 +27,7 @@ const SignIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/signin', formData);
+            const response = await axios.post('http://localhost:5000/signin', formData, { withCredentials: true });
             console.log(response.data);
             setSuccessMessage('You have successfully signed in!');
             setErrorMessage(''); // Clear any previous errors
@@ -35,9 +35,9 @@ const SignIn = () => {
             // Redirect to the main page
             navigate('/test'); // Placeholder route for the main page
         } catch (error) {
-            console.error(error.response.data);
+            console.error(error);
             setSuccessMessage(''); // Clear any previous success messages
-            setErrorMessage(error.response.data.message || 'An error occurred during sign in.');
+            setErrorMessage(error.response?.data?.message || 'An error occurred during sign in.');
         }
     };
 
