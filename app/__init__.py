@@ -1,10 +1,10 @@
-from flask import Flask, send_from_directory, jsonify, request
+from flask import Flask, send_from_directory, jsonify, request, Blueprint
 from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_session import Session
-from app.config import Config
+from config import Config
 import os
 
 
@@ -16,6 +16,7 @@ CORS(app, resources={r"/*": {"origins": ['http://localhost:3000', 'http://localh
 
 # CORS(app, supports_credentials=True)
 
+itinerary_bp = Blueprint('itinerary', __name__)
 
 bcrypt = Bcrypt(app)
 
@@ -29,7 +30,6 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-from app.routes import home, auth, itinerary_bp
 app.register_blueprint(itinerary_bp)
 
 @app.route('/')
@@ -39,7 +39,7 @@ def index():
 
 from . import models
 
-from app.routes import home, auth
+from app.routes import home, auth, itinerary
 
 @app.before_request
 def before_request():
