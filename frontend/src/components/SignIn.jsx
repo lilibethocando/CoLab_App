@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../index.css';
 
+
 const SignIn = () => {
     const [formData, setFormData] = useState({
         email: '',
@@ -33,7 +34,7 @@ const SignIn = () => {
             setErrorMessage(''); // Clear any previous errors
 
             // Redirect to the main page
-            navigate('/test'); // Placeholder route for the main page
+            navigate('/itinerary'); // Placeholder route for the main page
         } catch (error) {
             console.error(error);
             setSuccessMessage(''); // Clear any previous success messages
