@@ -36,5 +36,6 @@ flask_session/
 
 
 # .gitignore
-/CoLab_App/config.py
-/CoLab_App/frontend/package.json
+CoLab_App/config.py
+CoLab_App/frontend/package-lock.json
+CoLab_App/frontend/package.json
