@@ -21,6 +21,7 @@ dist
 dist-ssr
 *.local
 */static/assets/
+flask_session/
 
 # Editor directories and files
 .vscode/*
