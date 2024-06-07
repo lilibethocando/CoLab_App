@@ -5,7 +5,7 @@ import '../index.css';
 export const PopularDestinations = () => {
     const navigate = useNavigate();
     const handleButtonClick = () => {
-        navigate('/destinations');
+        navigate('/test');
     };
 
     return (
