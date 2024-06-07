@@ -39,7 +39,7 @@ const SignIn = () => {
             setErrorMessage(''); // Clear any previous errors
 
             // Redirect to the main page
-            navigate('/itinerary'); // Placeholder route for the main page
+            navigate('/itinerary'); 
         } catch (error) {
             console.error(error);
             setSuccessMessage(''); // Clear any previous success messages
