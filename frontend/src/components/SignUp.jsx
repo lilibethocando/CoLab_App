@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import '../index.css';
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -13,28 +12,27 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? checked : value,
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/signup', formData);
-            console.log(response.data);
+            const baseURL = process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000';
+            const response = await axios.post(`${baseURL}/signup`, formData);
             setSuccessMessage('You have successfully signed up!');
-            setErrorMessage(''); // Clear any previous errors
-            // Redirect to success page or perform any other actions as needed
+            setErrorMessage('');
+            // Redirect or perform other actions as needed
         } catch (error) {
             console.error(error.response.data);
-            setSuccessMessage(''); // Clear any previous success messages
+            setSuccessMessage('');
             setErrorMessage(error.response.data.message || 'An error occurred during sign up.');
         }
     };
