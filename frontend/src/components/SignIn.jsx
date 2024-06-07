@@ -3,6 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../index.css';
 
+// Create an Axios instance with the required configuration
+const axiosInstance = axios.create({
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000',
+    withCredentials: true,
+});
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -28,7 +33,7 @@ const SignIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:5000/signin', formData, { withCredentials: true });
+            const response = await axiosInstance.post('/signin', formData);
             console.log(response.data);
             setSuccessMessage('You have successfully signed in!');
             setErrorMessage(''); // Clear any previous errors
