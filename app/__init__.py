@@ -10,7 +10,7 @@ import os
 
 app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=['http://localhost:5173', 'https://colab-app.onrender.com'])
 
 itinerary_bp = Blueprint('itinerary', __name__)
 
