@@ -8,13 +8,9 @@ from config import Config
 import os
 
 
-app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
-CORS(app, resources={r"/*": {"origins": ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5000', 'http://0.0.0.0:5000']}}, supports_credentials=True)
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 
-# CORS(app, resources={r"/*": {"origins": "*"}})
-
-
-# CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True)
 
 itinerary_bp = Blueprint('itinerary', __name__)
 
@@ -44,12 +40,13 @@ from app.routes import home, auth, itinerary
 @app.before_request
 def before_request():
     if request.method == 'OPTIONS':
-        response = jsonify({'message': 'Preflight request received'})
-        response.headers.add('Access-Control-Allow-Origin', request.headers.get('Origin'))
-        response.headers.add('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response = app.make_default_options_response()
+        headers = request.headers.get('Access-Control-Request-Headers', '')
+        response.headers.add('Access-Control-Allow-Headers', headers)
+        response.headers.add('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE, PUT')
         response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response, 200
+        response.headers.add('Access-Control-Allow-Origin', request.headers.get('Origin', ''))
+        return response
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5000)
