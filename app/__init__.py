@@ -1,5 +1,5 @@
-from flask import Flask, send_from_directory, jsonify, request, Blueprint
-from flask_cors import CORS, cross_origin
+from flask import Flask, request, Blueprint
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
@@ -12,7 +12,7 @@ app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 
 CORS(app, supports_credentials=True, origins=['http://localhost:5173', 'https://colab-app.onrender.com'])
 
-itinerary_bp = Blueprint('itinerary', __name__)
+# itinerary_bp = Blueprint('itinerary', __name__)
 
 bcrypt = Bcrypt(app)
 
@@ -26,7 +26,7 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-app.register_blueprint(itinerary_bp)
+# app.register_blueprint(itinerary_bp)
 
 @app.route('/')
 def index():
@@ -35,7 +35,7 @@ def index():
 
 from . import models
 
-from app.routes import home, auth, itinerary
+from app.routes import home, auth, itinerary, itinerary_bp
 
 @app.before_request
 def before_request():
