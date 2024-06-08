@@ -1,7 +1,8 @@
 from flask import session, jsonify, request, Blueprint, render_template, redirect, url_for
+from flask_cors import CORS, cross_origin
 from . import itinerary_bp
 import requests
-from app import db
+from app import db, app
 from app.models import Itinerary
 
 API_KEY = 'AIzaSyARNOpZX6eVHWb2Ao1_q1IM1nRLs4xNdWc' 
@@ -34,8 +35,21 @@ def get_popular_destinations(city):
     return popular_destinations
 
 
+#this is to run REACT
+@itinerary_bp.route('/itinerary_search', methods=['POST'])
+@app.route('/itinerary_search', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def itinerary_search():
+    city = request.json.get('city')
+    if city:
+        popular_destinations = get_popular_destinations(city)
+        return jsonify({'places': popular_destinations})
+    else:
+        return jsonify({'error': 'City not provided'})
+
 
 @itinerary_bp.route('/search', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def search():
     city = request.json.get('city')  
     if city:
@@ -45,6 +59,7 @@ def search():
         return jsonify({'error': 'City not provided'})
 
 @itinerary_bp.route('/itineraries', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_user_itineraries():
     user_id = session.get("user_id")
 
@@ -55,6 +70,7 @@ def get_user_itineraries():
     return jsonify({"itineraries": [itinerary.to_json() for itinerary in itineraries]}), 200
 
 @itinerary_bp.route('/itineraries', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def create_itinerary():
     user_id = session.get("user_id")
     data = request.get_json()
@@ -72,13 +88,4 @@ def create_itinerary():
 
     return jsonify({"message": "Itinerary created successfully", "itinerary": new_itinerary.to_json()}), 201
 
-#this is to run REACT
-@itinerary_bp.route('/itinerary_search', methods=['POST'])
-def itinerary_search():
-    city = request.json.get('city')
-    if city:
-        popular_destinations = get_popular_destinations(city)
-        return jsonify({'places': popular_destinations})
-    else:
-        return jsonify({'error': 'City not provided'})
 

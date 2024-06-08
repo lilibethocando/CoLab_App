@@ -6,6 +6,12 @@ import ItineraryHeader from "../components/ItineraryHeader";
 import Modal from "../components/modal"; // Adjust the casing here
 import "../styles/ItineraryPage.css";
 
+// Create an Axios instance with the required configuration
+const axiosInstance = axios.create({
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000',
+    withCredentials: true,
+});
+
 const ItineraryPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [places, setPlaces] = useState([]);
@@ -20,8 +26,8 @@ const ItineraryPage = () => {
         e.preventDefault(); // Prevent the default form submission behavior
         setLoading(true);
         try {
-            const response = await axios.post('http://127.0.0.1:5000/itinerary_search', { city: searchTerm });
-            console.log('Response:', response.data); 
+            const response = await axiosInstance.post('/itinerary_search', { city: searchTerm });
+            console.log('Response:', response.data);
             setPlaces(response.data.places);
         } catch (error) {
             console.error('Error fetching popular destinations:', error);
@@ -30,15 +36,15 @@ const ItineraryPage = () => {
     };
 
     const handleCloseModal = () => {
-      setShowModal(false);
-  };
-  
+        setShowModal(false);
+    };
+
     const handleAddToItinerary = () => {
         console.log("Add to Itinerary button clicked");
-        setShowModal(true); 
+        setShowModal(true);
         console.log("showModal state:", showModal);
     };
-  
+
     return (
         <div>
             <SecondNavbar />
@@ -102,7 +108,7 @@ const ItineraryPage = () => {
                 ))}
             </div>
             {/* Render modal conditionally */}
-            {showModal && <Modal show={true} onClose={() => setShowModal(false)} />} 
+            {showModal && <Modal show={true} onClose={() => setShowModal(false)} />}
 
             <Footer />
         </div>
