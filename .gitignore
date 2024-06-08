@@ -39,3 +39,7 @@ flask_session/
 CoLab_App/config.py
 CoLab_App/frontend/package-lock.json
 CoLab_App/frontend/package.json
+
+config.py
+frontend/package-lock.json
+package.json
