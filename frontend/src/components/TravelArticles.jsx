@@ -21,7 +21,7 @@ const TravelArticles = () => {
                             <div className="w-full flex justify-start items-center gap-5">
                                 <button
                                     className="py-2 bg-[#ECBB40] rounded-lg flex justify-start items-center gap-2.5"
-                                    onClick={() => window.open('https://www.bigstarcopywriting.com/blog/content-marketing/travel-article-examples-to-inspire-your-writing/', '_blank')}
+                                    onClick={() => window.open('https://www.nerdwallet.com/article/travel/a-beginners-guide-to-budget-travel/', '_blank')}
                                 >
                                     <div className="text-black text-base font-normal font-roboto leading-6 break-words rounded-md p-1" style={{ background: '#ECBB40' }}>
                                         View Article
@@ -47,7 +47,7 @@ const TravelArticles = () => {
                                 <div className="w-full pt-2.5 flex justify-start items-center gap-6">
                                     <button
                                         className="py-4 bg-[#ECBB40] rounded-lg flex justify-start items-center gap-2.5"
-                                        onClick={() => window.open('https://www.bigstarcopywriting.com/blog/content-marketing/travel-article-examples-to-inspire-your-writing/', '_blank')}
+                                        onClick={() => window.open('https://www.townandcountrymag.com/leisure/travel-guide/a43953293/travel-with-friends-etiquette-guide/', '_blank')}
                                     >
                                         <div className="text-black text-base font-normal font-roboto leading-6 break-words rounded-md p-1" style={{ background: '#ECBB40' }}>
                                             View Article
@@ -70,7 +70,7 @@ const TravelArticles = () => {
                                 <div className="w-full flex justify-start items-center gap-5">
                                     <button
                                         className="py-3 bg-[#ECBB40] rounded-lg flex justify-start items-center gap-2.5"
-                                        onClick={() => window.open('https://www.bigstarcopywriting.com/blog/content-marketing/travel-article-examples-to-inspire-your-writing/', '_blank')}
+                                        onClick={() => window.open('https://www.gooverseas.com/blog/best-international-travel-tips-for-first-time-travelers/', '_blank')}
                                     >
                                         <div className="text-black text-base font-normal font-roboto leading-6 break-words rounded-md p-1" style={{ background: '#ECBB40' }}>
                                             View Article
@@ -98,7 +98,7 @@ const TravelArticles = () => {
                             <div className="w-full flex justify-start items-center gap-5">
                                 <button
                                     className="bg-[#ECBB40] rounded-lg flex justify-start items-center gap-2.5"
-                                    onClick={() => window.open('https://www.bigstarcopywriting.com/blog/content-marketing/travel-article-examples-to-inspire-your-writing/', '_blank')}
+                                    onClick={() => window.open('https://money.usnews.com/credit-cards/travel/', '_blank')}
                                 >
                                     <div className="text-black text-base font-normal font-roboto leading-6 break-words rounded-md p-1" style={{ background: '#ECBB40' }}>
                                         View Article
@@ -120,7 +120,7 @@ const TravelArticles = () => {
                             <div className="w-full flex justify-start items-center gap-6">
                                 <button
                                     className="py-2 bg-[#ECBB40] rounded-lg flex justify-start items-center gap-2.5"
-                                    onClick={() => window.open('https://www.bigstarcopywriting.com/blog/content-marketing/travel-article-examples-to-inspire-your-writing/', '_blank')}
+                                    onClick={() => window.open('https://www.nationalgeographic.com/travel/article/what-sustainable-tourism-means/', '_blank')}
                                 >
                                     <div className="text-black text-base font-normal font-roboto leading-6 break-words rounded-md p-1" style={{ background: '#ECBB40' }}>
                                         View Article

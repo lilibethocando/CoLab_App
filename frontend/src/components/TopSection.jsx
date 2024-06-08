@@ -21,7 +21,7 @@ export const TopSection = () => {
                     </Link>
                 </div>
             </div>
-            <img src="/temp.png" alt="image" className="w-1/2 object-cover"/>
+            <img src="/landing_main.png" alt="image" className="w-1/2 object-cover"/>
         </div>
     );
 };
