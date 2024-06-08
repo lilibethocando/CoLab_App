@@ -27,13 +27,19 @@ class User(db.Model):
 class Itinerary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
+    country = db.Column(db.String(100))
+    city = db.Column(db.String(100))
     user_id = db.Column(db.String(32), db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    places = db.relationship('Place', backref='itinerary', lazy=True)
 
     def to_json(self):
         return {
             "id": self.id,
             "name": self.name,
+            "country": self.country,
+            "city": self.city,
             "user_id": self.user_id,
-            "created_at": self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            "created_at": self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            "places": [place.to_json() for place in self.places]
         }
