@@ -31,7 +31,7 @@ class Itinerary(db.Model):
     city = db.Column(db.String(100))
     user_id = db.Column(db.String(32), db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    places = db.relationship('Place', backref='itinerary', lazy=True)
+    # places = db.relationship('Place', backref='itinerary', lazy=True)
 
     def to_json(self):
         return {
@@ -41,5 +41,5 @@ class Itinerary(db.Model):
             "city": self.city,
             "user_id": self.user_id,
             "created_at": self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            "places": [place.to_json() for place in self.places]
+            # "places": [place.to_json() for place in self.places]
         }
