@@ -57,6 +57,7 @@ def search():
         return jsonify({'popular_destinations': popular_destinations})
     else:
         return jsonify({'error': 'City not provided'})
+    
 
 @itinerary_bp.route('/itineraries', methods=['GET'])
 @cross_origin(supports_credentials=True)

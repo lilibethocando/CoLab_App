@@ -1,10 +1,10 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import SecondNavbar from "../components/SecondNavbar";
 import Footer from "../components/Footer";
 import ItineraryHeader from "../components/ItineraryHeader";
-import Modal from "../components/modal";
+import AddToItineraryModal from '../components/AddToItineraryModal';
 import "../styles/ItineraryPage.css";
 
 // Create an Axios instance with the required configuration
@@ -15,6 +15,7 @@ const axiosInstance = axios.create({
 
 const ItineraryPage = () => {
     const [searchTerm, setSearchTerm] = useState(''); // State for storing the search term input by the user
+    const [selectedPlace, setSelectedPlace] = useState(null); // State for storing the selected place
     const [places, setPlaces] = useState([]); // State for storing the search results (places)
     const [loading, setLoading] = useState(false); // State for indicating whether a search request is in progress
     const [showModal, setShowModal] = useState(false); // State for controlling the visibility of the modal
@@ -48,30 +49,28 @@ const ItineraryPage = () => {
 
     // Handle the submission of the search form
     const handleSearchSubmit = async (e) => {
-        e.preventDefault(); // Prevent the default form submission behavior
-        setLoading(true); // Set loading to true to indicate that a search request is in progress
+        e.preventDefault();
+        setLoading(true);
         try {
             const response = await axiosInstance.post('/itinerary_search', { city: searchTerm });
             console.log('Response:', response.data);
-            setPlaces(response.data.places); // Update the places state with the search results
+            if (response.data && response.data.places) {
+                setPlaces(response.data.places); // Update the places state with the data from the server response
+            } else {
+                console.error('Invalid response data:', response.data);
+            }
         } catch (error) {
             console.error('Error fetching popular destinations:', error);
         }
-        setLoading(false); // Set loading to false after the search request completes
+        setLoading(false);
     };
-
-   
 
     // Handle the "Add to Itinerary" button click
-    const handleAddToItinerary = () => {
-        console.log("Add to Itinerary button clicked");
-        setShowModal(true); // Set showModal to true to open the modal
-        console.log("showModal state:", showModal);
+    const handleAddToItinerary = (place) => {
+        setSelectedPlace(place); // Store the selected place
+        setShowModal(true); // Open the modal
+        console.log('Selected place name:', place.name); // CHECK IF NAMES ARE BEING PROPERLY STORED
     };
-    /*  // Handle closing the modal
-     const handleCloseModal = () => {
-        setShowModal(false); // Set showModal to false to close the modal
-    }; */
 
     return (
         <div>
@@ -155,7 +154,8 @@ const ItineraryPage = () => {
                 {places.slice(0, 6).map((place, index) => (
                     <div key={index} className="itinerary-grid-item">
                         <div className="place-item">
-                            <button className="add-button" onClick={handleAddToItinerary}>Add to Itinerary</button>
+                            {/* // STORING THE NAME WHEN ONCLICK */}
+                            <button className="add-button" onClick={() => handleAddToItinerary(place)}>Add to Itinerary</button> {/* Pass the place object */}
                             {place.photo_url ? (
                                 <img src={place.photo_url} alt={place.name} />
                             ) : (
@@ -166,7 +166,11 @@ const ItineraryPage = () => {
                     </div>
                 ))}
             </div>
-            {showModal && <Modal show={true} onClose={() => setShowModal(false)} place={selectedPlace} />}
+            <AddToItineraryModal
+                show={showModal} // Show the modal only if showModal is true
+                onClose={() => setShowModal(false)}
+                place={selectedPlace} // Pass the selected place to the modal
+            />
             <Footer /> {/* Render the footer */}
         </div>
     );

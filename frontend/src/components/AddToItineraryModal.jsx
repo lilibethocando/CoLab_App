@@ -1,111 +1,132 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../styles/AddToItineraryModal.css'; // Ensure the path is correct
 
-const AddToItineraryModal = ({ show, onClose }) => {
-    const [itineraries, setItineraries] = useState([]); // State to store the list of itineraries
-    const [newItineraryName, setNewItineraryName] = useState(''); // State to store the name of a new itinerary
-    const [creatingNewItinerary, setCreatingNewItinerary] = useState(false); // State to toggle the creation of a new itinerary
+// Component for adding a place to an itinerary
+const AddToItineraryModal = ({ show, onClose, place }) => {
+    // State variables
+    const [itineraries, setItineraries] = useState([]); // State to store fetched itineraries
     const [selectedItinerary, setSelectedItinerary] = useState(null); // State to store the selected itinerary
+    const [newItineraryName, setNewItineraryName] = useState(''); // State to store the name of a new itinerary
+    const [message, setMessage] = useState(''); // State to display messages to the user
 
-    // Fetch itineraries when the modal is shown
-    useEffect(() => {
-        if (show) {
-            fetchItineraries();
-        }
-    }, [show]);
-
-    // Fetch the list of itineraries from the backend
+    // Function to fetch the list of itineraries from the backend
     const fetchItineraries = async () => {
         try {
             const response = await axios.get('/itineraries');
-            setItineraries(response.data.itineraries); // Update the state with fetched itineraries
+            setItineraries(response.data.itineraries);
         } catch (error) {
             console.error('Error fetching itineraries:', error);
         }
     };
 
-    // Handle the creation of a new itinerary
+    // Fetch itineraries when the modal is shown
+    useEffect(() => {
+        if (show) {
+            console.log('Fetching itineraries...');
+            fetchItineraries();
+            const user_id = localStorage.getItem('user_id');
+            console.log(`Fetching itineraries for user ${user_id}`);
+        }
+    }, [show]);
+
+    // Function to handle adding the selected place to the selected itinerary
+    const handleAddToItinerary = async () => {
+        const user_id = localStorage.getItem('user_id');
+        if (!user_id) {
+            console.log('User not logged in');
+            return;
+        }
+
+        if (!selectedItinerary) {
+            setMessage('Please select an itinerary.');
+            return;
+        }
+
+        try {
+            const response = await axios.post(`/itineraries/${selectedItinerary.id}/items`, {
+                name: place.name,
+                photo_url: place.photo_url,
+            });
+            setMessage('Place added to itinerary successfully.');
+        } catch (error) {
+            console.error('Error adding place to itinerary:', error);
+            setMessage('Error adding place to itinerary.');
+        }
+    };
+
+    // Function to handle creating a new itinerary
     const handleCreateItinerary = async () => {
+        const user_id = localStorage.getItem('user_id');
+        if (!user_id) {
+            console.log('User not logged in');
+            return;
+        }
+
         try {
             const response = await axios.post('/itineraries', { name: newItineraryName });
             const newItinerary = response.data.itinerary;
-            setItineraries([...itineraries, newItinerary]); // Add the new itinerary to the state
-            setCreatingNewItinerary(false); // Reset the creation state
-            setSelectedItinerary(newItinerary); // Select the newly created itinerary
+            setItineraries([...itineraries, newItinerary]);
+            setSelectedItinerary(newItinerary);
+            setMessage('New itinerary created and place added.');
         } catch (error) {
             console.error('Error creating itinerary:', error);
+            setMessage('Error creating itinerary.');
         }
     };
 
-    // Handle adding an item to the selected itinerary
-    const handleAddToExistingItinerary = async () => {
-        if (!selectedItinerary) {
-            console.error("No itinerary selected.");
-            return;
-        }
-        try {
-            const itemData = {
-                name: "Item Name",
-                // Add additional item details here if necessary
-            };
-    
-            // Make a POST request to the backend to add the item to the selected itinerary
-            const response = await axios.post(`/itineraries/${selectedItinerary.id}/items`, itemData);
-            console.log("Item added to existing itinerary:", response.data);
-    
-            // Display a success message or handle the response as needed
-        } catch (error) {
-            console.error("Error adding item to existing itinerary:", error);
-            // Handle errors appropriately
-        }
-    };
-
-    // Wrapper function to handle the addition process
-    const handleAddToSelectedItinerary = async () => {
-        await handleAddToExistingItinerary();
-    };
-        
-    // Handle selecting an itinerary
+    // Function to handle selecting an existing itinerary
     const handleSelectItinerary = (itinerary) => {
-        setSelectedItinerary(itinerary); // Set the selected itinerary
+        setSelectedItinerary(itinerary);
     };
 
-    // Handle closing the modal
+    // Function to handle closing the modal
     const handleCloseModal = () => {
-        onClose(); // Call the onClose function passed as a prop to close the modal
+        onClose();
+        setMessage('');
     };
 
+    // If show is false or no place is selected, return null
+    if (!show || !place) {
+        return null;
+    }
+
+    // JSX to render the modal content
     return (
-        <div className={`modal ${show ? 'show' : ''}`}> {/* Conditional class to show/hide the modal */}
-            <div className="modal-content">
-                <span className="close" onClick={handleCloseModal}>&times;</span> {/* Close button */}
+        <div className="add-to-itinerary-modal">
+            <div className="add-to-itinerary-modal-content">
+                <span className="add-to-itinerary-modal-close" onClick={handleCloseModal}>&times;</span>
                 <h2>Add to Itinerary</h2>
                 <div>
                     <h3>Choose an existing itinerary:</h3>
-                    <ul>
-                        {itineraries.map((itinerary) => ( // Map through itineraries to display them
-                            <li key={itinerary.id} onClick={() => handleSelectItinerary(itinerary)}>
-                                {itinerary.name}
-                            </li>
-                        ))}
-                    </ul>
+                    {itineraries && itineraries.length > 0 ? (
+                        <ul>
+                            {itineraries.map((itinerary) => (
+                                <li
+                                    key={itinerary.id}
+                                    className={selectedItinerary && selectedItinerary.id === itinerary.id ? 'add-to-itinerary-modal-selected' : ''}
+                                    onClick={() => handleSelectItinerary(itinerary)}
+                                >
+                                    {itinerary.name}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No existing itineraries found.</p>
+                    )}
                 </div>
-                {creatingNewItinerary ? (
-                    <div>
-                        <h3>Create a new itinerary:</h3>
-                        <input type="text" value={newItineraryName} onChange={(e) => setNewItineraryName(e.target.value)} />
-                        <button onClick={handleCreateItinerary}>Create</button>
-                    </div>
-                ) : (
-                    <div>
-                        <button onClick={() => setCreatingNewItinerary(true)}>Create New Itinerary</button>
-                    </div>
-                )}
-                {selectedItinerary && (
-                    <div>
-                        <button onClick={handleAddToSelectedItinerary}>Add to Selected Itinerary</button>
-                    </div>
-                )}
+                <div>
+                    <h3>Create a new itinerary:</h3>
+                    <input
+                        type="text"
+                        value={newItineraryName}
+                        onChange={(e) => setNewItineraryName(e.target.value)}
+                        placeholder="New itinerary name"
+                    />
+                    <button onClick={handleCreateItinerary}>Create</button>
+                </div>
+                <button onClick={handleAddToItinerary}>Add to Itinerary</button>
+                {message && <p className="add-to-itinerary-modal-message">{message}</p>}
             </div>
         </div>
     );
