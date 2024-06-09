@@ -71,6 +71,7 @@ def get_user_itineraries():
     return jsonify({"itineraries": [itinerary.to_json() for itinerary in itineraries]}), 200
 
 @itinerary_bp.route('/itineraries', methods=['POST'])
+@app.route('/itineraries', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def create_itinerary():
     user_id = session.get("user_id")
@@ -91,6 +92,7 @@ def create_itinerary():
 
 
 @itinerary_bp.route('/itineraries/<int:itinerary_id>/items', methods=['POST'])
+@app.route('/itineraries/<int:itinerary_id>/items', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def add_item_to_itinerary(itinerary_id):
     user_id = session.get("user_id")
