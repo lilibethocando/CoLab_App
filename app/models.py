@@ -31,7 +31,9 @@ class Itinerary(db.Model):
     city = db.Column(db.String(100))
     user_id = db.Column(db.String(32), db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    places = db.relationship('Place', backref='itinerary', lazy=True)
+    #places = db.relationship('Place', backref='itinerary', lazy=True)
+    items = db.relationship('ItineraryPlace', backref='itinerary', lazy=True) #items are places
+    
 
     def to_json(self):
         return {
@@ -41,5 +43,21 @@ class Itinerary(db.Model):
             "city": self.city,
             "user_id": self.user_id,
             "created_at": self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            "places": [place.to_json() for place in self.places]
+            #"places": [place.to_json() for place in self.places]
+            'items': [item.to_json() for item in self.items] #items are places
+        }
+            
+
+#add more items if necessary
+class ItineraryPlace(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    photo_url = db.Column(db.String(255))
+    itinerary_id = db.Column(db.Integer, db.ForeignKey('itinerary.id'), nullable=False)
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'photo_url': self.photo_url
         }

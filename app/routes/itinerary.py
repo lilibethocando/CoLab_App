@@ -3,7 +3,7 @@ from flask_cors import CORS, cross_origin
 from . import itinerary_bp
 import requests
 from app import db, app
-from app.models import Itinerary
+from app.models import Itinerary, ItineraryPlace
 
 API_KEY = 'AIzaSyARNOpZX6eVHWb2Ao1_q1IM1nRLs4xNdWc' 
 
@@ -89,3 +89,26 @@ def create_itinerary():
     return jsonify({"message": "Itinerary created successfully", "itinerary": new_itinerary.to_json()}), 201
 
 
+@itinerary_bp.route('/itineraries/<int:itinerary_id>/items', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def add_item_to_itinerary(itinerary_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    itinerary = Itinerary.query.filter_by(id=itinerary_id, user_id=user_id).first()
+    if not itinerary:
+        return jsonify({"error": "Itinerary not found"}), 404
+
+    data = request.get_json()
+    item_name = data.get("name")
+    photo_url = data.get("photo_url")
+
+    if not item_name:
+        return jsonify({"error": "Name is required"}), 400
+
+    new_item = ItineraryPlace(name=item_name, photo_url=photo_url, itinerary_id=itinerary_id)
+    db.session.add(new_item)
+    db.session.commit()
+
+    return jsonify({"message": "Item added successfully", "item": new_item.to_json()}), 201
