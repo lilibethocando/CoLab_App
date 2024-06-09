@@ -59,17 +59,6 @@ def search():
         return jsonify({'error': 'City not provided'})
     
 
-@itinerary_bp.route('/itineraries', methods=['GET'])
-@cross_origin(supports_credentials=True)
-def get_user_itineraries():
-    user_id = session.get("user_id")
-
-    if not user_id:
-        return jsonify({"error": "Unauthorized"}), 401
-    
-    itineraries = Itinerary.query.filter_by(user_id=user_id).all()
-    return jsonify({"itineraries": [itinerary.to_json() for itinerary in itineraries]}), 200
-
 @itinerary_bp.route('/itineraries', methods=['POST'])
 @app.route('/itineraries', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -89,6 +78,20 @@ def create_itinerary():
     db.session.commit()
 
     return jsonify({"message": "Itinerary created successfully", "itinerary": new_itinerary.to_json()}), 201
+    
+
+@itinerary_bp.route('/itineraries', methods=['GET'])
+@app.route('/itineraries', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_user_itineraries():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+    
+    itineraries = Itinerary.query.filter_by(user_id=user_id).all()
+    return jsonify({"itineraries": [itinerary.to_json() for itinerary in itineraries]}), 200
+
 
 
 @itinerary_bp.route('/itineraries/<int:itinerary_id>/items', methods=['POST'])

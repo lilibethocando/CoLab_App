@@ -34,7 +34,9 @@ const SignIn = () => {
         e.preventDefault();
         try {
             const response = await axiosInstance.post('/signin', formData);
+            const { user } = response.data;
             console.log(response.data);
+            localStorage.setItem('user_id', user.id);
             setSuccessMessage('You have successfully signed in!');
             setErrorMessage(''); // Clear any previous errors
 
@@ -43,7 +45,7 @@ const SignIn = () => {
         } catch (error) {
             console.error(error);
             setSuccessMessage(''); // Clear any previous success messages
-            setErrorMessage(error.response?.data?.message || 'An error occurred during sign in.');
+            setErrorMessage(error.response?.data?.Error || 'An error occurred during sign in.');
         }
     };
 
