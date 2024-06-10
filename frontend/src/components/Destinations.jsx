@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import '../index.css';
-import image1Philly from '../images/image1philly.jpeg';
+import philly from '../images/philly.jpeg';
 import img2sav from '../images/img2sav.jpg';
-import img3sa from '../images/img3sa.jpg';
-import hawai from '../images/hawai.jpg';
-import arizona from '../images/aizona.jpg';
-import colorado from '../images/colorado.jpg';
-import minnesota from '../images/minnesota.jpg';
-import sanfrancisco from '../images/sanfrancisco.jpg';
+import img3sa from '/washington-dc.webp';
+import hawai from '/hawaii.jpeg';
+import arizona from '../images/arizona.jpg';
+import colorado from '../images/Colorado.jpg';
+import minnesota from '/minnesota.jpeg';
+import sanfrancisco from '../images/sfo.jpg';
 import nashville from '../images/nashville.jpg';
-import newyork from '../images/newyork.jpg';
-import miami from '../images/miami.jpg';
+import newyork from '/NYC.avif';
+import miami from '/miami.jpeg';
 import chicago from '../images/chicago.jpg';
 
 
@@ -20,7 +20,7 @@ const Destinations = () => {
     const navigate = useNavigate();
     const [loadedRows, setLoadedRows] = useState(0);
     const [destinations, setDestinations] = useState([
-        { place: 'Philadelphia', img: image1Philly },
+        { place: 'Philadelphia', img: philly },
         { place: 'Savannah', img: img2sav },        
         { place: 'Washington', img: img3sa },
         { place: 'Hawaii', img: hawai },
