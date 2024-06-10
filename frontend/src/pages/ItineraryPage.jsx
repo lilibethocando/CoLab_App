@@ -66,11 +66,17 @@ const ItineraryPage = () => {
     };
 
     // Handle the "Add to Itinerary" button click
+    // Handle the "Add to Itinerary" button click
     const handleAddToItinerary = (place) => {
         setSelectedPlace(place); // Store the selected place
         setShowModal(true); // Open the modal
         console.log('Selected place name:', place.name); // CHECK IF NAMES ARE BEING PROPERLY STORED
+
+        // Store the name of the selected place and its photo
+        localStorage.setItem('selectedPlaceName', place.name);
+        localStorage.setItem('selectedPlacePhoto', place.photo_url);
     };
+
 
     return (
         <div>

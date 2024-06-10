@@ -1,4 +1,6 @@
-.add-to-itinerary-modal {
+/* Common modal styles */
+.add-to-itinerary-modal,
+.create-itinerary-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,15 +12,18 @@
     align-items: center;
 }
 
-.add-to-itinerary-modal-content {
+.add-to-itinerary-modal-content,
+.create-itinerary-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
     width: 500px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Ensure positioning context for the close button */
 }
 
-.add-to-itinerary-modal-close {
+.add-to-itinerary-modal-close,
+.create-itinerary-modal-close {
     position: absolute; /* Positioned relative to its nearest positioned ancestor */
     top: 10px; /* 10px from the top */
     right: 10px; /* 10px from the right */
@@ -28,12 +33,13 @@
     color: #000; /* Close button color */
 }
 
-
-.add-to-itinerary-modal h2 {
+.add-to-itinerary-modal h2,
+.create-itinerary-modal h2 {
     margin-top: 0;
 }
 
-.add-to-itinerary-modal h3 {
+.add-to-itinerary-modal h3,
+.create-itinerary-modal h3 {
     margin: 10px 0;
 }
 
@@ -54,7 +60,8 @@
     background-color: #ddd;
 }
 
-.add-to-itinerary-modal button {
+.add-to-itinerary-modal button,
+.create-itinerary-modal button {
     background-color: #007BFF;
     color: white;
     border: none;
@@ -63,11 +70,13 @@
     cursor: pointer;
 }
 
-.add-to-itinerary-modal button:hover {
+.add-to-itinerary-modal button:hover,
+.create-itinerary-modal button:hover {
     background-color: #0056b3;
 }
 
-.add-to-itinerary-modal input[type="text"] {
+.add-to-itinerary-modal input[type="text"],
+.create-itinerary-modal input[type="text"] {
     width: calc(100% - 30px);
     padding: 10px;
     margin-bottom: 10px;

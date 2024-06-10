@@ -1,12 +1,13 @@
 .itinerary-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vw;
-    height: 641px; 
-    background: var(--primary-dark, #235778);
-    padding-top: 60px; 
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 100%; /* Set max-width to 100% to fill the page */
+  background: var(--primary-dark, #235778);
+  padding-top: 60px; 
+  padding-bottom: 60px;
+}
   
   .header-text {
     color: var(--Color-Neutral-white, #FFF);
@@ -18,20 +19,19 @@
     text-align: center;
     margin-bottom: 50px;
   }
-  
-  .search-container {
+  .content-container {
     display: flex;
-    justify-content: flex-start; /* Aligns the search bar to the left */
-    width: 100%;
-    padding: 0 20px; /* Adds some padding to the sides */
-    margin-bottom: 20px; /* Space between search bar and results */
-  }
-  
+    flex-direction: row; /* Display children elements horizontally */
+    justify-content: space-between; /* Distribute items evenly with space between them */
+    align-items: center;
+    padding: 30px;
+}
+
   .search-input {
-    width: 300px; /* Smaller width for the search bar */
-    height: 40px; /* Smaller height for the search bar */
-    border-radius: 20px;
-    border: 3px solid #999;
+    width: 500px; /* Smaller width for the search bar */
+    height: 45px; /* Smaller height for the search bar */
+    border-radius: 10px;
+    border: 2px solid #999;
     background: #F0F5F7;
     padding: 10px;
     font-size: 16px;
@@ -58,17 +58,23 @@
   
   .itinerary-grid-item {
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
+    padding: 0px;
+    text-align: left; /* Align text to the left */
+    max-width: 700px; /* Set a maximum width for the card */
+    margin: 0 auto; /* Center the card horizontally */
+    border: none; /* Remove border */
   }
   
   .itinerary-grid-item img {
     max-width: 100%;
-    height: auto;
-    border-radius: 10px;
+    height: 400px;     
+    object-fit: cover; 
   }
+
+  .itinerary-grid-item h3 {
+    font-size: 16px; /* Reduce font size */
+    margin-top: 10px; /* Add some margin to separate the name from the image */
+}
   
   .image-grid-container {
     display: grid;
@@ -85,34 +91,47 @@
   
   .add-button {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 20px;
+    left: 15px;
     background-color: #fff;
     padding: 8px 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 14px;
     cursor: pointer;
+    height: 40px;
   }
+
   
   /* Dropdown container */
+  .filter-container {
+    border: 2px solid black; /* Add border */
+    border-radius: 7px; /* Add border radius */
+    padding: 1px; /* Add padding */
+    margin-right: 15px;
+    position: relative; /* Add this line */
+
+    
+    
+}
 .dropdown {
     position: relative;
-    display: inline-block;
-    width: 180px; /* Adjust the width as needed */
+    width: 160px; /* Adjust the width as needed */
   }
   
   /* Dropdown button */
   .dropbtn {
-    background-color: #f1f1f1;
     color: black;
     padding: 10px;
-    font-size: 14px;
+    font-size: 16px;
     border: none;
     cursor: pointer;
     width: 100%;
-    text-align: left;
+    text-align: center;
+    font-weight: bold;
   }
+
+  
   
   /* Dropdown content */
   .dropdown-content {
@@ -144,9 +163,7 @@
     margin-right: 10px; /* Adjust the spacing between search and filter */
   }
   
-  .filter-container {
-    flex-shrink: 0;
-  }
+ 
   .modal {
     position: fixed;
     top: 0;
