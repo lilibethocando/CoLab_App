@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Form</title>
+</head>
+<body>
+    <h1>Enter a State</h1>
+    <!-- Display existing states -->
+    <ul>
+        {% for state in states %}
+            <li>{{ state.name }}</li>
+        {% endfor %}
+    </ul>
+    <!-- Form to submit a new state -->
+    <form action="{{ url_for('state.submit_state') }}" method="post">
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state">
+        <button type="submit">Save State</button>
+    </form>
+</body>
+</html>

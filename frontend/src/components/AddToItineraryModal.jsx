@@ -13,22 +13,31 @@ const AddToItineraryModal = ({ show, onClose, place }) => {
     // Function to fetch the list of itineraries from the backend
     const fetchItineraries = async () => {
         try {
-            const response = await axios.get('/itineraries');
+            const response = await axios.get('/itineraries'); // GET request to '/itineraries'
             setItineraries(response.data.itineraries);
         } catch (error) {
             console.error('Error fetching itineraries:', error);
         }
     };
-
+    // the itineraries will be fetched and logged to the console every time the modal is shown. This will 
+    //help us verify if the itineraries are being retrieved successfully before reaching the part where we try to access the user ID.
     // Fetch itineraries when the modal is shown
     useEffect(() => {
+        const fetchItineraries = async () => {
+            try {
+                const response = await axios.get('/itineraries');
+                console.log('Fetched itineraries:', response.data.itineraries);
+            } catch (error) {
+                console.error('Error fetching itineraries:', error);
+            }
+        };
+    
         if (show) {
             console.log('Fetching itineraries...');
             fetchItineraries();
-            const user_id = localStorage.getItem('user_id');
-            console.log(`Fetching itineraries for user ${user_id}`);
         }
     }, [show]);
+    
 
     // Function to handle adding the selected place to the selected itinerary
     const handleAddToItinerary = async () => {
