@@ -2,35 +2,48 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import '../index.css';
+import image1Philly from '../images/image1philly.jpeg';
+import img2sav from '../images/img2sav.jpg';
+import img3sa from '../images/img3sa.jpg';
+import hawai from '../images/hawai.jpg';
+import arizona from '../images/aizona.jpg';
+import colorado from '../images/colorado.jpg';
+import minnesota from '../images/minnesota.jpg';
+import sanfrancisco from '../images/sanfrancisco.jpg';
+import nashville from '../images/nashville.jpg';
+import newyork from '../images/newyork.jpg';
+import miami from '../images/miami.jpg';
+import chicago from '../images/chicago.jpg';
+
 
 const Destinations = () => {
     const navigate = useNavigate();
     const [loadedRows, setLoadedRows] = useState(0);
     const [destinations, setDestinations] = useState([
-        { place: 'Colorado', img: '/colorado.jpeg' },
-        { place: 'Hawaii', img: '/hawaii.jpeg' },
-        { place: 'Italy', img: '/italy.jpeg' },
-        { place: 'Arizona', img: '/arizona.jpeg' },
-        { place: 'Mexico City', img: '/mexico.jpeg' },
-        { place: 'Portugal', img: '/portugal.jpeg' },
+        { place: 'Philadelphia', img: image1Philly },
+        { place: 'Savannah', img: img2sav },        
+        { place: 'Washington', img: img3sa },
+        { place: 'Hawaii', img: hawai },
+        { place: 'Arizona', img: arizona },
+        { place: 'Colorado', img: colorado },
     ]);
 
     const handleLoadMore = () => {
         if (loadedRows === 0) {
             // Load the first row of destinations
             const newRow = [
-                { place: 'New Destination 1', img: '/new_destination_1.jpeg' },
-                { place: 'New Destination 2', img: '/new_destination_2.jpeg' },
-                { place: 'New Destination 3', img: '/new_destination_3.jpeg' },
+                { place: 'Minnesota', img: minnesota },
+                { place: 'San Francisco', img: sanfrancisco },
+                { place: 'Nashville', img: nashville },
             ];
             setDestinations([...destinations, ...newRow]);
             setLoadedRows(1); // Update loadedRows to 1
         } else if (loadedRows === 1) {
             // Load the second row of destinations
             const newRow = [
-                { place: 'New Destination 4', img: '/new_destination_4.jpeg' },
-                { place: 'New Destination 5', img: '/new_destination_5.jpeg' },
-                { place: 'New Destination 6', img: '/new_destination_6.jpeg' },
+                { place: 'New York', img: newyork },
+                { place: 'Miami', img: miami },
+                { place: 'Chicago', img: chicago },
             ];
             setDestinations([...destinations, ...newRow]);
             setLoadedRows(2); // Update loadedRows to 2
