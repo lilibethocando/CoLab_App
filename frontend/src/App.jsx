@@ -7,7 +7,6 @@ import SignIn from './pages/SignInPage';
 import PopularDestinations from './components/PopularDestinations';
 import ItineraryPage from './pages/ItineraryPage';
 import DestinationsPage from './pages/DestinationsPage';
-import StateForm from './pages/StateForm';
 
 const App = () => {
   const location = useLocation();
@@ -22,8 +21,6 @@ const App = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/itinerary" element={<ItineraryPage />} />
         <Route path="/destinations" element={<DestinationsPage />} />
-        <Route path="/state-form" element={<StateForm />} />
-
       </Routes>
     </>
   );

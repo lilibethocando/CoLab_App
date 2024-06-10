@@ -89,5 +89,5 @@ def get_current_user():
 @app.route("/signout", methods=["POST"])
 @cross_origin(supports_credentials=True)
 def logout_user():
-    session.pop("user_id")
-    return "200"
+    session.pop("user_id", None)
+    return jsonify({"message": "Successfully signed out"}), 200

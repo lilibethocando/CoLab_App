@@ -33,10 +33,8 @@ migrate = Migrate(app, db)
 def index():
     return app.send_static_file('index.html')
 
-from .models import State  # Ensure you import the State model here
 
 from app.routes import home, auth, itinerary, itinerary_bp
-from app.routes.state import state_bp
 
 
 @app.before_request

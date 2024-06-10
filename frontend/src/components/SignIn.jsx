@@ -20,7 +20,7 @@ const SignIn = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -34,16 +34,18 @@ const SignIn = () => {
         e.preventDefault();
         try {
             const response = await axiosInstance.post('/signin', formData);
+            const { user } = response.data;
             console.log(response.data);
+            localStorage.setItem('user_id', user.id);
             setSuccessMessage('You have successfully signed in!');
             setErrorMessage(''); // Clear any previous errors
 
             // Redirect to the main page
-            navigate('/itinerary'); // Placeholder route for the main page
+            navigate('/itinerary');
         } catch (error) {
             console.error(error);
             setSuccessMessage(''); // Clear any previous success messages
-            setErrorMessage(error.response?.data?.message || 'An error occurred during sign in.');
+            setErrorMessage(error.response?.data?.Error || 'An error occurred during sign in.');
         }
     };
 

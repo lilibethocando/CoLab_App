@@ -14,14 +14,14 @@ const axiosInstance = axios.create({
 });
 
 const ItineraryPage = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedPlace, setSelectedPlace] = useState(null);
-    const [places, setPlaces] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [searchTerm, setSearchTerm] = useState(''); // State for storing the search term input by the user
+    const [selectedPlace, setSelectedPlace] = useState(null); // State for storing the selected place
+    const [places, setPlaces] = useState([]); // State for storing the search results (places)
+    const [loading, setLoading] = useState(false); // State for indicating whether a search request is in progress
+    const [showModal, setShowModal] = useState(false); // State for controlling the visibility of the modal
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // State for storing the login status of the user
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Hook for programmatic navigation
 
     // Check if the user is logged in and redirect to sign-in if not
     useEffect(() => {
@@ -29,22 +29,22 @@ const ItineraryPage = () => {
             try {
                 const response = await axiosInstance.get('/current_user');
                 if (response.data.id) {
-                    setIsLoggedIn(true);
+                    setIsLoggedIn(true); // Set isLoggedIn to true if the user is logged in
                 } else {
-                    navigate('/signin');
+                    navigate('/signin'); // Redirect to sign-in if the user is not logged in
                 }
             } catch (error) {
                 console.error('Error checking login status:', error);
-                navigate('/signin');
+                navigate('/signin'); // Redirect to sign-in if an error occurs
             }
         };
 
-        checkLoginStatus();
-    }, [navigate]);
+        checkLoginStatus(); // Call the function to check the login status
+    }, [navigate]); // Run this effect only once when the component mounts
 
     // Handle changes in the search input field
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
+        setSearchTerm(e.target.value); // Update the searchTerm state with the new input value
     };
 
     // Handle the submission of the search form
@@ -55,7 +55,7 @@ const ItineraryPage = () => {
             const response = await axiosInstance.post('/itinerary_search', { city: searchTerm });
             console.log('Response:', response.data);
             if (response.data && response.data.places) {
-                setPlaces(response.data.places);
+                setPlaces(response.data.places); // Update the places state with the data from the server response
             } else {
                 console.error('Invalid response data:', response.data);
             }
@@ -66,37 +66,22 @@ const ItineraryPage = () => {
     };
 
     // Handle the "Add to Itinerary" button click
-    const handleAddToItinerary = async (place) => {
-        try {
-            const response = await axiosInstance.get('/current_user');
-            console.log('Current user:', response.data);
+    // Handle the "Add to Itinerary" button click
+    const handleAddToItinerary = (place) => {
+        setSelectedPlace(place); // Store the selected place
+        setShowModal(true); // Open the modal
+        console.log('Selected place name:', place.name); // CHECK IF NAMES ARE BEING PROPERLY STORED
 
-            if (!response.data.id) {
-                console.log('User is not authenticated');
-                navigate('/signin');
-                return;
-            }
-
-            setSelectedPlace(place);
-
-                // Attempt to fetch itineraries
-            try {
-                const itinerariesResponse = await axiosInstance.get('/itineraries');
-                console.log('Fetched itineraries:', itinerariesResponse.data.itineraries);
-                setShowModal(true);
-                console.log('Selected place name:', place.name);
-            } catch (error) {
-                console.error('Error fetching itineraries:', error.response?.status, error.response?.data);
-            }
-        } catch (error) {
-            console.error('Error fetching current user:', error.response?.status, error.response?.data);
-        }
+        // Store the name of the selected place and its photo
+        localStorage.setItem('selectedPlaceName', place.name);
+        localStorage.setItem('selectedPlacePhoto', place.photo_url);
     };
+
 
     return (
         <div>
-            <SecondNavbar />
-            <ItineraryHeader />
+            <SecondNavbar /> {/* Render the secondary navigation bar */}
+            <ItineraryHeader /> {/* Render the itinerary header */}
             <div className="content-container">
                 <div className="search-container">
                     <form onSubmit={handleSearchSubmit}>
@@ -110,6 +95,7 @@ const ItineraryPage = () => {
                     </form>
                 </div>
                 <div className="search-filter-container">
+                    {/* Render various filter dropdowns */}
                     <div className="filter-container">
                         <div className="dropdown">
                             <button className="dropbtn">Arts & Culture <span className="arrow-down">&#9660;</span></button>
@@ -174,7 +160,8 @@ const ItineraryPage = () => {
                 {places.slice(0, 6).map((place, index) => (
                     <div key={index} className="itinerary-grid-item">
                         <div className="place-item">
-                            <button className="add-button" onClick={() => handleAddToItinerary(place)}>Add to Itinerary</button>
+                            {/* // STORING THE NAME WHEN ONCLICK */}
+                            <button className="add-button" onClick={() => handleAddToItinerary(place)}>Add to Itinerary</button> {/* Pass the place object */}
                             {place.photo_url ? (
                                 <img src={place.photo_url} alt={place.name} />
                             ) : (
@@ -186,11 +173,11 @@ const ItineraryPage = () => {
                 ))}
             </div>
             <AddToItineraryModal
-                show={showModal}
+                show={showModal} // Show the modal only if showModal is true
                 onClose={() => setShowModal(false)}
-                place={selectedPlace}
+                place={selectedPlace} // Pass the selected place to the modal
             />
-            <Footer />
+            <Footer /> {/* Render the footer */}
         </div>
     );
 };

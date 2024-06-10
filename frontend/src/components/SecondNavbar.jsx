@@ -2,6 +2,9 @@ import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import logo from '../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+
 
 const SecondNavbar = () => {
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -11,11 +14,20 @@ const SecondNavbar = () => {
         setMobileDrawerOpen(!mobileDrawerOpen);
     }
 
-    const handleSignOut = () => {
-        // Add sign out logic here
-        // For example, clear session or token
-        navigate('/signin');
-    }
+    const axiosInstance = axios.create({
+        baseURL: process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000',
+        withCredentials: true,
+    });
+
+    const handleSignOut = async () => {
+        try {
+            const response = await axiosInstance.post('/signout');
+            console.log(response.data.message);
+            navigate('/');  // redirect to the landing page
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
+    };
 
     return (
         <nav className="sticky top-0 z-50 py-3 backdrop-blur-lg border-b border-neutral-700/80" style={{ backgroundColor: '#fff', zIndex: '1000' }}>
@@ -28,9 +40,6 @@ const SecondNavbar = () => {
                         </Link>
                     </div>
                     <div className="hidden lg:flex justify-center space-x-12 items-center">
-                        <Link to="/" className='py-2 px-3 text-black'>
-                            Home
-                        </Link>
                         <Link to="/plan" className='py-2 px-3 text-black'>
                             Plan a Trip
                         </Link>
