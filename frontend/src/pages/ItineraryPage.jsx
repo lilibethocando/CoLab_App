@@ -80,7 +80,6 @@ const ItineraryPage = () => {
 
     return (
         <div>
-            <SecondNavbar /> {/* Render the secondary navigation bar */}
             <ItineraryHeader /> {/* Render the itinerary header */}
             <div className="content-container">
                 <div className="search-container">

@@ -40,10 +40,10 @@ const SecondNavbar = () => {
                         </Link>
                     </div>
                     <div className="hidden lg:flex justify-center space-x-12 items-center">
-                        <Link to="/plan" className='py-2 px-3 text-black'>
+                        <Link to="/itinerary" className='py-2 px-3 text-black'>
                             Plan a Trip
                         </Link>
-                        <Link to="/itineraries" className='py-2 px-3 text-black'>
+                        <Link to="/myitineraries" className='py-2 px-3 text-black'>
                             My Itineraries
                         </Link>
                         <button onClick={handleSignOut} className="py-2 px-3 rounded-md" style={{ backgroundColor: '#235778', color: '#ffffff' }}>

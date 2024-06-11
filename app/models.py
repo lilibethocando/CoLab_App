@@ -50,12 +50,38 @@ class Itinerary(db.Model):
 class ItineraryPlace(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    photo_url = db.Column(db.Text)  # Changed to TEXT to store longer URLs
+    photo_url = db.Column(db.Text)
     itinerary_id = db.Column(db.Integer, db.ForeignKey('itinerary.id'), nullable=False)
+    notes = db.relationship('Note', backref='place', lazy=True)
+    dates = db.relationship('Date', backref='place', lazy=True)
 
     def to_json(self):
         return {
             'id': self.id,
             'name': self.name,
-            'photo_url': self.photo_url
+            'photo_url': self.photo_url,
+            'notes': [note.to_json() for note in self.notes],
+            'dates': [date.to_json() for date in self.dates]
+        }
+
+class Note(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    place_id = db.Column(db.Integer, db.ForeignKey('itinerary_place.id'), nullable=False)
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'content': self.content
+        }
+
+class Date(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    place_id = db.Column(db.Integer, db.ForeignKey('itinerary_place.id'), nullable=False)
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'date': self.date.strftime('%Y-%m-%d')
         }

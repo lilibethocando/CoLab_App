@@ -118,3 +118,12 @@ def add_item_to_itinerary(itinerary_id):
     db.session.commit()
 
     return jsonify({"message": "Item added successfully", "item": new_item.to_json()}), 201
+
+#Route for getting an itinerary by ID:
+@app.route('/itinerary/<int:id>')
+def get_itinerary(id):
+    itinerary = Itinerary.query.get(id)
+    if itinerary:
+        return jsonify(itinerary.to_json())
+    else:
+        return jsonify({'error': 'Itinerary not found'}), 404

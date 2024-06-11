@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "lucide-react": "^0.379.0",
