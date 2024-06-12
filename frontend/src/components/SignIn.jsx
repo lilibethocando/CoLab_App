@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../index.css';
 
-// Create an Axios instance with the required configuration
 const axiosInstance = axios.create({
     baseURL: process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000',
     withCredentials: true,
@@ -21,6 +20,15 @@ const SignIn = () => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check for the flag in local storage
+        if (localStorage.getItem('signupSuccess')) {
+            setSuccessMessage('Hooray! You have successfully signed up, now proceed to Sign in above!');
+            // Remove the flag after displaying the message
+            localStorage.removeItem('signupSuccess');
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;

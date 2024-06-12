@@ -29,7 +29,10 @@ const SignUp = () => {
             const response = await axios.post(`${baseURL}/signup`, formData);
             setSuccessMessage('You have successfully signed up!');
             setErrorMessage('');
+            // Set a flag in local storage to indicate successful sign-up
+            localStorage.setItem('signupSuccess', 'true');
             // Redirect or perform other actions as needed
+            navigate('/signin');
         } catch (error) {
             console.error(error.response.data);
             setSuccessMessage('');

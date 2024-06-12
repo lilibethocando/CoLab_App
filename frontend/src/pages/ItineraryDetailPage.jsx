@@ -3,7 +3,9 @@ import ItineraryDetail from '../components/ItineraryDetail';
 
 const ItineraryDetailPage = () => {
     return (
+        <>
     <ItineraryDetail />
+    </>
     )
 }
 

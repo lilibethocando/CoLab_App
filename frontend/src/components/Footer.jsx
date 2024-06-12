@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../assets/logo.png';
+import { Link } from 'react-router-dom';
 
 function App() {
     return (
@@ -15,15 +16,21 @@ function App() {
                 </div>
             </div>
             <div className="flex justify-center items-center gap-6 mt-6">
-                <a href="/" className="text-black font-roboto text-lg">Home</a>
+                <Link to="/">
+                <span className="text-black font-roboto text-lg">Home</span>
+                </Link>
                 <div className="text-black text-base font-roboto">|</div>
-                <a href="/" className="text-black font-roboto text-lg">Plan a Trip</a>
+                <Link to="/itinerary" className="text-black text-base font-roboto">
+                <span className="text-black font-roboto text-lg">Plan a Trip</span>
+                </Link>
                 <div className="text-black text-base font-roboto">|</div>
-                <a href="/" className="text-black font-roboto text-lg">Itineraries</a>
+                <Link to="/myitineraries">
+                <span className="text-black font-roboto text-lg">Itineraries</span>
+                </Link>
                 <div className="text-black text-base font-roboto">|</div>
-                <a href="/" className="text-black font-roboto text-lg">FAQ</a>
-                <div className="text-black text-base font-roboto">|</div>
-                <a href="/" className="text-black font-roboto text-lg">About</a>
+                <Link to="/">
+                <span className="text-black font-roboto text-lg">About</span>
+                </Link>
             </div>
 
             <div

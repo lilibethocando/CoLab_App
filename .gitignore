@@ -22,6 +22,8 @@ dist-ssr
 *.local
 */static/assets/
 flask_session/
+test.py
+Singapore.csv
 
 # Editor directories and files
 .vscode/*

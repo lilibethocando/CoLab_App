@@ -3,7 +3,9 @@ import MyItineraries from '../components/MyItineraries';
 
 export const MyItinerariesPage = () => {
     return (
+        <>
     <MyItineraries />
+    </>
     )
 }
 

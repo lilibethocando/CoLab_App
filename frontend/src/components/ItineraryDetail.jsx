@@ -4,9 +4,7 @@ import axios from 'axios';
 import { CalendarIcon, DownloadIcon, SaveIcon, ShareIcon } from '@heroicons/react/outline';
 
 const baseURL =
-    process.env.NODE_ENV === 'production'
-        ? 'https://colab-app.onrender.com'
-        : 'http://localhost:5000';
+    process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000';
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
@@ -38,7 +36,16 @@ const ItineraryDetail = () => {
 
     const handleSave = async () => {
         try {
-            const response = await axiosInstance.post('/save/itinerary', itinerary);
+            const response = await axiosInstance.post('/save/itinerary', {
+                id: itinerary.id, // Include only necessary fields
+                name: itinerary.name,
+                items: itinerary.items.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    notes: item.notes,
+                    day: item.day,
+                })),
+            });
             alert('Itinerary saved successfully!');
         } catch (error) {
             console.error('Error saving itinerary:', error);
@@ -46,25 +53,40 @@ const ItineraryDetail = () => {
         }
     };
 
+    const handleNoteChange = (placeId, index, value) => {
+        setItinerary(prevState => {
+            const newItems = [...prevState.items];
+            newItems[index].notes = [{ content: value }];
+            return { ...prevState, items: newItems };
+        });
+    };
+
+    const handleDayChange = (placeId, index, value) => {
+        setItinerary(prevState => {
+            const newItems = [...prevState.items];
+            newItems[index].day = value;
+            return { ...prevState, items: newItems };
+        });
+    };
+
     const handleDownload = async () => {
         try {
-            // Perform API call to download the itinerary
             const response = await axiosInstance.get(`/itinerary/${id}/download`, {
                 responseType: 'blob', // Response type is blob for downloading files
             });
-            
+
             // Create a URL for the blob data
             const url = window.URL.createObjectURL(new Blob([response.data]));
-            
+
             // Create a temporary link element
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', `${itinerary.name}.csv`); // Set the filename
             document.body.appendChild(link);
-            
+
             // Trigger the download
             link.click();
-            
+
             // Clean up
             link.parentNode.removeChild(link);
         } catch (error) {
@@ -99,27 +121,40 @@ const ItineraryDetail = () => {
                     <div className="w-full h-24 bg-white flex items-center justify-between px-14">
                         <h1 className="text-2xl">{itinerary.name}</h1>
                         <div className="flex items-center gap-4">
-                            <button onClick={handleSave} className="button">
+                            <button onClick={handleSave} className="button rounded-lg" style={{ background: '#ECBB40' }}>
                                 <SaveIcon className="h-5 w-5 mr-1 text-black" />Save
                             </button>
-                            <button onClick={handleDownload} className="button">
+                            <button onClick={handleDownload} className="button rounded-lg" style={{ background: '#ECBB40' }}>
                                 <DownloadIcon className="h-5 w-5 mr-1 text-black" />Download
                             </button>
-                            <button onClick={handleShare} className="button">
+                            <button onClick={handleShare} className="button rounded-lg" style={{ background: '#ECBB40' }}>
                                 <ShareIcon className="h-5 w-5 mr-1 text-black" />Share
                             </button>
                         </div>
                     </div>
                     <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {itinerary.items.map((place) => (
+                        {itinerary.items.map((place, index) => (
                             <div key={place.id} className="flex flex-col items-start">
                                 <h2 className="text-lg mb-1">{place.name}</h2>
                                 <img className="w-24 h-24 object-cover mb-2" src={place.photo_url} alt={place.name} />
-                                <input type="text" placeholder="Add notes..." className="border border-gray-300 p-2 rounded-lg mb-2" />
+                                <input
+                                    type="text"
+                                    placeholder="Add notes..."
+                                    className="border border-gray-300 p-2 rounded-lg mb-2"
+                                    value={place.notes?.[0]?.content || ''}
+                                    onChange={(e) => handleNoteChange(place.id, index, e.target.value)}
+                                />
                                 <div className="flex items-center relative">
-                                    <input type="text" placeholder="Add day" className="border border-gray-300 p-2 rounded-lg pr-10" />
+                                    <input
+                                        type="text"
+                                        placeholder="Add day"
+                                        className="border border-gray-300 p-2 rounded-lg pr-10"
+                                        value={place.day || ''}
+                                        onChange={(e) => handleDayChange(place.id, index, e.target.value)}
+                                    />
                                     <CalendarIcon className="h-5 w-5 absolute right-3 top-3 text-gray-400 pointer-events-none" />
                                 </div>
+                                <small className="text-gray-500 mt-2">Format: YYYY-MM-DD</small>
                             </div>
                         ))}
                     </div>
