@@ -1,3 +1,5 @@
+/* AddToItineraryModal.css */
+
 /* Common modal styles */
 .add-to-itinerary-modal,
 .create-itinerary-modal {
@@ -12,12 +14,43 @@
     align-items: center;
 }
 
-.add-to-itinerary-modal-content,
-.create-itinerary-modal-content {
+.add-to-itinerary-modal .itinerary-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns with equal width */
+    
+}
+
+.add-to-itinerary-modal .itinerary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    text-align: left; /* Align the text to the left */
+
+}
+
+.add-to-itinerary-modal .itinerary-item img {
+    max-width: 100%; /* Adjust the maximum width of the photos */
+    height: 200px; /* Set a fixed height for the image container */
+    object-fit: cover; /* Ensure the image covers the entire container */
+    margin-bottom: 0; /* Remove margin bottom from the photos */
+}
+
+.add-to-itinerary-modal .itinerary-item span {
+    text-align: left; /* Align the text to the left */
+}
+
+
+.add-to-itinerary-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    width: 500px;
+    width: 600px; /* Adjusted width */
+    max-width: 80%; /* Adjusted width */
+    max-height: 80%; /* Adjusted height */
+    overflow: auto; /* Enable scrolling if content exceeds modal size */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: relative; /* Ensure positioning context for the close button */
 }
@@ -36,7 +69,19 @@
 .add-to-itinerary-modal h2,
 .create-itinerary-modal h2 {
     margin-top: 0;
+    text-align: center;
+
 }
+
+.add-to-itinerary-modal .divider {
+    width: 100%;
+    height: 2px;
+    background-color: #ECBB40;
+    margin: 20px 0; /* Adjust margin as needed */
+    height: 3px;
+    
+}
+
 
 .add-to-itinerary-modal h3,
 .create-itinerary-modal h3 {
@@ -60,20 +105,29 @@
     background-color: #ddd;
 }
 
-.add-to-itinerary-modal button,
-.create-itinerary-modal button {
-    background-color: #007BFF;
-    color: white;
+.add-to-itinerary-modal button {
+    background-color: #235778;
+    color: #fff;
     border: none;
-    padding: 10px 15px;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    margin: 20px auto; /* Center align the buttons */
+    display: block; /* Ensure the buttons take up the full width */
+    font-size: 16px;
+    font-weight: bold;
+    width: 400px;
+    
 }
+
+
+
 
 .add-to-itinerary-modal button:hover,
 .create-itinerary-modal button:hover {
     background-color: #0056b3;
 }
+
 
 .add-to-itinerary-modal input[type="text"],
 .create-itinerary-modal input[type="text"] {
@@ -88,3 +142,66 @@
     margin-top: 10px;
     color: green;
 }
+
+
+
+
+
+.create-itinerary-modal .divider {
+    width: 100%;
+    height: 2px;
+    background-color: #ECBB40; /* Yellow color */
+    margin: 20px 0; /* Adjust margin as needed */
+}
+
+
+.create-itinerary-modal h2 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 25px; /* Adjusted font size */
+}
+
+.create-itinerary-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 500px; /* Adjusted width */
+    max-width: 80%; /* Adjusted width */
+    max-height: 80%; /* Adjusted height */
+    overflow: auto; /* Enable scrolling if content exceeds modal size */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Ensure positioning context for the close button */
+    
+}
+
+.create-itinerary-modal .input-container {
+    display: flex;
+    justify-content: space-between; /* Align items to the left and right */
+    align-items: center;
+    border: 1px solid black;
+    padding-right: 15px; /* Add some padding to the right */
+}
+
+.create-itinerary-modal .input-container input {
+    width: calc(100% - 45px); /* Match the width to the divider line */
+    padding: 10px; /* Match the padding to the input */
+    border-radius: 5px; /* Add border radius */
+    border: 1px solid #ccc; /* Add border */
+    margin-right: 10px; /* Add some space between input and button */
+    margin-top: 30px; /* Add margin to the top */
+}
+
+.create-itinerary-modal button {
+    background-color: #235778;
+    color: #fff;
+    border: none;
+    margin-top: 10px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: auto; /* Align button to the right */
+}
+
+
+/* AddToItineraryModal.css */

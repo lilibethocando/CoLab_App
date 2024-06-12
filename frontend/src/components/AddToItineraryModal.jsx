@@ -1,61 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../styles/AddToItineraryModal.css'; // Ensure the path is correct
-import CreateItineraryModal from './CreateItineraryModal'; // Import the CreateItineraryModal component
+import '../styles/AddToItineraryModal.css';
+import CreateItineraryModal from './CreateItineraryModal';
+import MessageModal, { Messages as MessageTypes } from './MessageModal'; // Import the MessageModal component and Messages object
 
 const AddToItineraryModal = ({ show, onClose, place }) => {
-    const [selectedItinerary, setSelectedItinerary] = useState(null); // State to store the selected itinerary
-    const [message, setMessage] = useState(''); // State to display messages to the user
-    const [showModal, setShowModal] = useState(false); // State to control the main modal visibility
-    const [showCreateModal, setShowCreateModal] = useState(false); // State to control the create modal visibility
-    const [itineraries, setItineraries] = useState([]); // State to store fetched itineraries
+    const [selectedItinerary, setSelectedItinerary] = useState(null);
+    const [message, setMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [itineraries, setItineraries] = useState([]);
 
-    // Create an Axios instance with the required configuration
     const axiosInstance = axios.create({
         baseURL: process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000',
         withCredentials: true,
     });
 
-    // Function to handle adding the selected place to the selected itinerary
-    const handleAddToItinerary = async () => {
-        if (!selectedItinerary) {
-            setMessage('Please select an itinerary.');
-            return;
-        }
-
-        const selectedPlaceName = localStorage.getItem('selectedPlaceName');
-        const selectedPlacePhoto = localStorage.getItem('selectedPlacePhoto');
-        const userId = localStorage.getItem('userId');
-        const itineraryId = selectedItinerary.id;
-
-        try {
-            await axiosInstance.post(`/itineraries/${itineraryId}/items`, {
-                name: selectedPlaceName,
-                photo_url: selectedPlacePhoto,
-                user_id: userId,
-            });
-            setShowModal(false);
-        } catch (error) {
-            console.error('Error adding place to itinerary:', error);
-            setMessage('Error adding place to itinerary.');
-        }
-    };
-
-    // Fetch itineraries when the modal is shown
     useEffect(() => {
         if (showModal) {
             fetchItineraries();
+        } else {
+            // Reset message when the modal is closed
+            setMessage('');
         }
     }, [showModal]);
 
-    // Show modal when place is selected
     useEffect(() => {
         if (place) {
             setShowModal(true);
         }
     }, [place]);
 
-    // Function to fetch the list of itineraries from the backend
     const fetchItineraries = async () => {
         try {
             const response = await axiosInstance.get('/itineraries');
@@ -65,49 +40,52 @@ const AddToItineraryModal = ({ show, onClose, place }) => {
         }
     };
 
-    // Function to handle selecting an itinerary
     const handleSelectItinerary = async (itinerary) => {
         setSelectedItinerary(itinerary);
         localStorage.setItem('selectedItineraryName', itinerary.name);
-
-        // Retrieve the previously selected place name and photo
         const selectedPlaceName = localStorage.getItem('selectedPlaceName');
         const selectedPlacePhoto = localStorage.getItem('selectedPlacePhoto');
         const userId = localStorage.getItem('userId');
         const itineraryId = itinerary.id;
-
+    
         try {
-            await axiosInstance.post(`/itineraries/${itineraryId}/items`, {
-                name: selectedPlaceName,
-                photo_url: selectedPlacePhoto,
-                user_id: userId,
-            });
-            setShowModal(false); // Close the main modal after successfully adding a place
+          await axiosInstance.post(`/itineraries/${itineraryId}/items`, {
+            name: selectedPlaceName,
+            photo_url: selectedPlacePhoto,
+            user_id: userId,
+          });
+          setShowModal(false);
+          setMessage(MessageTypes.PLACE_ADDED_SUCCESSFULLY); // Set success message
         } catch (error) {
-            console.error('Error adding place to itinerary:', error);
-            setMessage('Error adding place to itinerary.');
+          console.error('Error adding place to itinerary:', error);
+          setMessage('Error adding place to itinerary.');
         }
-    };
+      };
 
-
-    // Function to handle opening the CreateItineraryModal
     const handleOpenCreateModal = () => {
         setShowModal(false);
         setShowCreateModal(true);
     };
 
-    // Function to handle closing the main modal
     const handleCloseModal = () => {
         setShowModal(false);
         onClose();
-        setMessage('');
+        setMessage(''); // Reset message when closing the modal
     };
 
-    // Function to handle creating a new itinerary
     const handleCreateItinerary = (newItinerary) => {
         setItineraries([...itineraries, newItinerary]);
         setSelectedItinerary(newItinerary);
         setShowCreateModal(false);
+    };
+
+    const getRandomPhoto = (itinerary) => {
+        if (itinerary.items && itinerary.items.length > 0) {
+            const randomPlace = itinerary.items[Math.floor(Math.random() * itinerary.items.length)];
+            return randomPlace.photo_url;
+        } else {
+            return null;
+        }
     };
 
     return (
@@ -117,34 +95,32 @@ const AddToItineraryModal = ({ show, onClose, place }) => {
                     <div className="add-to-itinerary-modal-content">
                         <span className="add-to-itinerary-modal-close" onClick={handleCloseModal}>&times;</span>
                         <h2>Add to Itinerary</h2>
+                        <div className="divider"></div>
                         <div>
-                            <h3>Choose an existing itinerary:</h3>
                             {itineraries && itineraries.length > 0 ? (
-                                <ul>
+                                <div className="itinerary-list">
                                     {itineraries.map((itinerary) => (
-                                        <li
+                                        <div
                                             key={itinerary.id}
                                             className={selectedItinerary && selectedItinerary.id === itinerary.id ? 'add-to-itinerary-modal-selected' : ''}
-                                            onClick={() => {
-                                                handleSelectItinerary(itinerary);
-                                                handleAddToItinerary();
-                                            }}
+                                            onClick={() => handleSelectItinerary(itinerary)}
                                         >
-                                            {itinerary.name}
-                                        </li>
+                                            <div className="itinerary-item">
+                                                <img src={getRandomPhoto(itinerary)} alt={itinerary.name} />
+                                                <span>{itinerary.name}</span>
+                                            </div>
+                                        </div>
                                     ))}
-                                </ul>
+                                </div>
                             ) : (
                                 <p>No existing itineraries found.</p>
                             )}
                         </div>
                         <button onClick={handleOpenCreateModal}>Create New Itinerary</button>
-                        <button onClick={handleAddToItinerary}>Add to Itinerary</button>
                         {message && <p className="add-to-itinerary-modal-message">{message}</p>}
                     </div>
                 </div>
             )}
-
             {/* Create New Itinerary Modal */}
             {showCreateModal && (
                 <CreateItineraryModal
@@ -158,4 +134,3 @@ const AddToItineraryModal = ({ show, onClose, place }) => {
 };
 
 export default AddToItineraryModal;
-
