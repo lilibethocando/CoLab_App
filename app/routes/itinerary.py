@@ -236,3 +236,6 @@ def share_itinerary(itinerary_id):
     download_base_url = f"{scheme}://{host}"
     download_url = f"{download_base_url}/itinerary/{itinerary_id}/download"
     return jsonify({'download_url': download_url})
+
+
+#Testing this, we need to add the "Delete Itinerary" route here. 
