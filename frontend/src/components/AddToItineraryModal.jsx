@@ -5,7 +5,6 @@ import CreateItineraryModal from './CreateItineraryModal';
 
 const AddToItineraryModal = ({ show, onClose, place }) => {
     const [selectedItinerary, setSelectedItinerary] = useState(null);
-    const [message, setMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [itineraries, setItineraries] = useState([]);
@@ -18,9 +17,6 @@ const AddToItineraryModal = ({ show, onClose, place }) => {
     useEffect(() => {
         if (showModal) {
             fetchItineraries();
-        } else {
-            // Reset message when the modal is closed
-            setMessage('');
         }
     }, [showModal]);
 
@@ -54,16 +50,11 @@ const AddToItineraryModal = ({ show, onClose, place }) => {
                 user_id: userId,
             });
             setShowModal(false);
-            setMessage('Place added successfully!'); // Set success message
             setTimeout(() => {
-                setMessage('');
-            }, 3000); // Hide message after 3 seconds
+                // Add any post-action logic here
+            }, 3000); // Example: Hide modal after 3 seconds
         } catch (error) {
             console.error('Error adding place to itinerary:', error);
-            setMessage('Error adding place to itinerary.');
-            setTimeout(() => {
-                setMessage('');
-            }, 3000); // Hide message after 3 seconds
         }
     };
 
@@ -75,7 +66,6 @@ const AddToItineraryModal = ({ show, onClose, place }) => {
     const handleCloseModal = () => {
         setShowModal(false);
         onClose();
-        setMessage(''); // Reset message when closing the modal
     };
 
     const handleCreateItinerary = (newItinerary) => {
@@ -120,7 +110,6 @@ const AddToItineraryModal = ({ show, onClose, place }) => {
                             )}
                         </div>
                         <button onClick={handleOpenCreateModal}>Create New Itinerary</button>
-                        {message && <p className="add-to-itinerary-modal-message">{message}</p>}
                     </div>
                 </div>
             )}
