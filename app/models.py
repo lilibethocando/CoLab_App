@@ -21,7 +21,6 @@ class User(db.Model):
             "password": self.password,
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S')
         }
-    
 
 
 class Itinerary(db.Model):
@@ -31,8 +30,7 @@ class Itinerary(db.Model):
     city = db.Column(db.String(100))
     user_id = db.Column(db.String(32), db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    items = db.relationship('ItineraryPlace', backref='itinerary', lazy=True) #items are places
-    
+    items = db.relationship('ItineraryPlace', backref='itinerary', cascade='all, delete-orphan', lazy=True)
 
     def to_json(self):
         return {
@@ -42,18 +40,17 @@ class Itinerary(db.Model):
             "city": self.city,
             "user_id": self.user_id,
             "created_at": self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-            'items': [item.to_json() for item in self.items] #items are places
+            'items': [item.to_json() for item in self.items]
         }
-            
 
-#add more items if necessary
+
 class ItineraryPlace(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     photo_url = db.Column(db.Text)
-    itinerary_id = db.Column(db.Integer, db.ForeignKey('itinerary.id'), nullable=False)
-    notes = db.relationship('Note', backref='place', lazy=True)
-    dates = db.relationship('Date', backref='place', lazy=True)
+    itinerary_id = db.Column(db.Integer, db.ForeignKey('itinerary.id', ondelete='CASCADE'), nullable=False)
+    notes = db.relationship('Note', backref='place', cascade='all, delete-orphan', lazy=True)
+    dates = db.relationship('Date', backref='place', cascade='all, delete-orphan', lazy=True)
 
     def to_json(self):
         return {
@@ -64,10 +61,11 @@ class ItineraryPlace(db.Model):
             'dates': [date.to_json() for date in self.dates]
         }
 
+
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-    place_id = db.Column(db.Integer, db.ForeignKey('itinerary_place.id'), nullable=False)
+    place_id = db.Column(db.Integer, db.ForeignKey('itinerary_place.id', ondelete='CASCADE'), nullable=True)
 
     def to_json(self):
         return {
@@ -75,10 +73,11 @@ class Note(db.Model):
             'content': self.content
         }
 
+
 class Date(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
-    place_id = db.Column(db.Integer, db.ForeignKey('itinerary_place.id'), nullable=False)
+    place_id = db.Column(db.Integer, db.ForeignKey('itinerary_place.id', ondelete='CASCADE'), nullable=True)
 
     def to_json(self):
         return {

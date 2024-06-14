@@ -21,10 +21,9 @@ const ItineraryDetail = () => {
         const fetchItinerary = async () => {
             try {
                 const response = await axiosInstance.get(`/itinerary/${id}`);
-                console.log('API Response:', response.data); // Debugging log
                 setItinerary(response.data);
             } catch (error) {
-                console.error('There was an error fetching the itinerary!', error);
+                console.error('Failed to fetch itinerary:', error);
                 setError('Failed to fetch itinerary');
             } finally {
                 setLoading(false);
@@ -34,10 +33,23 @@ const ItineraryDetail = () => {
         fetchItinerary();
     }, [id]);
 
+    const handleDeletePlace = async (itineraryId, placeId) => {
+        try {
+            await axiosInstance.delete(`/itineraries/${itineraryId}/places/${placeId}`);
+            setItinerary(prevState => ({
+                ...prevState,
+                items: prevState.items.filter(place => place.id !== placeId)
+            }));
+        } catch (error) {
+            console.error('Failed to delete place:', error);
+            setError('Failed to delete place');
+        }
+    };
+
     const handleSave = async () => {
         try {
             const response = await axiosInstance.post('/save/itinerary', {
-                id: itinerary.id, // Include only necessary fields
+                id: itinerary.id,
                 name: itinerary.name,
                 items: itinerary.items.map(item => ({
                     id: item.id,
@@ -72,22 +84,15 @@ const ItineraryDetail = () => {
     const handleDownload = async () => {
         try {
             const response = await axiosInstance.get(`/itinerary/${id}/download`, {
-                responseType: 'blob', // Response type is blob for downloading files
+                responseType: 'blob',
             });
 
-            // Create a URL for the blob data
             const url = window.URL.createObjectURL(new Blob([response.data]));
-
-            // Create a temporary link element
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `${itinerary.name}.csv`); // Set the filename
+            link.setAttribute('download', `${itinerary.name}.csv`);
             document.body.appendChild(link);
-
-            // Trigger the download
             link.click();
-
-            // Clean up
             link.parentNode.removeChild(link);
         } catch (error) {
             console.error('Error downloading itinerary:', error);
@@ -155,6 +160,12 @@ const ItineraryDetail = () => {
                                     <CalendarIcon className="h-5 w-5 absolute right-3 top-3 text-gray-400 pointer-events-none" />
                                 </div>
                                 <small className="text-gray-500 mt-2">Format: YYYY-MM-DD</small>
+                                <button
+                                    onClick={() => handleDeletePlace(itinerary.id, place.id)}
+                                    className="text-red-600 text-sm mt-2"
+                                >
+                                    Delete
+                                </button>
                             </div>
                         ))}
                     </div>
