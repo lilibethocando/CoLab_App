@@ -21,12 +21,10 @@ const MyItineraries = () => {
         const fetchItineraries = async () => {
             try {
                 const response = await axiosInstance.get('/itineraries');
-                console.log('API Response:', response.data); // Debugging log
                 setItineraries(response.data.itineraries || []);
             } catch (error) {
-                console.error('There was an error fetching the itineraries!', error);
-                setError('Failed to fetch itineraries');
-                setItineraries([]); // Set an empty array in case of an error
+                console.error('Failed to fetch itineraries, you need to Sign in.:', error);
+                setError('Failed to fetch itineraries, you need to Sign in.');
             } finally {
                 setLoading(false);
             }
@@ -34,6 +32,16 @@ const MyItineraries = () => {
 
         fetchItineraries();
     }, []);
+
+    const handleDelete = async (id) => {
+        try {
+            await axiosInstance.delete(`/itineraries/${id}`);
+            setItineraries(itineraries.filter(itinerary => itinerary.id !== id));
+        } catch (error) {
+            console.error('Failed to delete itinerary:', error);
+            setError('Failed to delete itinerary');
+        }
+    };
 
     if (loading) {
         return <p>Loading...</p>;
@@ -55,9 +63,18 @@ const MyItineraries = () => {
                     <div className="mt-6 grid grid-cols-3 gap-4">
                         {itineraries.length > 0 ? (
                             itineraries.map((itinerary, index) => (
-                                <div key={index} className="bg-white p-4 shadow-md">
+                                <div key={index} className="relative bg-white p-4 shadow-md">
+                                    <div className="flex justify-end">
+                                        <div
+                                            onClick={() => handleDelete(itinerary.id)}
+                                            className="cursor-pointer text-red-600 text-xl font-bold"
+                                            style={{ position: 'absolute', top: '0', right: '0' }}
+                                        >
+                                            &times;
+                                        </div>
+                                    </div>
                                     <h2 className="text-xl font-bold">{itinerary.name}</h2>
-                                    <div className="mt-2">
+                                    <div className="mt-2 relative">
                                         <img
                                             src={itinerary.items.length > 0 ? itinerary.items[0].photo_url : ''}
                                             alt={itinerary.name}

@@ -195,20 +195,31 @@ def save_itinerary():
                     db.session.add(new_note)
                     print(f"Added note: {note_content}")  # Debug: Print added note
 
-            # Add new dates for the place
-            if 'dates' in item:
-                for date_value in item['dates']:
+            # Add new date for the place
+            if 'day' in item:
+                try:
+                    day = item['day']
+                    parsed_date = datetime.strptime(day, '%Y-%m-%d').date()
+
                     new_date = Date(
-                        date=datetime.strptime(date_value, '%Y-%m-%d').date(),
+                        date=parsed_date,
                         place_id=place_id
                     )
                     db.session.add(new_date)
-                    print(f"Added date: {date_value}")  # Debug: Print added date
+                    print(f"Added date: {parsed_date}")  # Debug: Print added date
+                except ValueError as e:
+                    print(f"Error parsing date {day}: {e}")
+                    continue  # Skip invalid dates
 
         print("Committing the session...")  # Debug: Before committing
         db.session.commit()
         print("Session committed successfully.")  # Debug: After committing
         return jsonify({'message': 'Itinerary updated successfully'}), 200
+
+    except Exception as e:
+        print(f"Error saving itinerary: {e}")
+        db.session.rollback()
+        return jsonify({'error': 'Failed to update itinerary'}), 500
 
     except Exception as e:
         print("Error:", str(e))  # Debug: Print the error message
@@ -262,4 +273,38 @@ def share_itinerary(itinerary_id):
     return jsonify({'download_url': download_url})
 
 
-#Testing this, we need to add the "Delete Itinerary" route here. 
+@app.route('/itineraries/<int:itinerary_id>', methods=['DELETE'])
+@cross_origin(supports_credentials=True)
+def delete_itinerary(itinerary_id):
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    itinerary = Itinerary.query.filter_by(id=itinerary_id, user_id=user_id).first()
+
+    if not itinerary:
+        return jsonify({"error": "Itinerary not found"}), 404
+
+    db.session.delete(itinerary)
+    db.session.commit()
+
+    return jsonify({"message": "Itinerary deleted successfully"}), 200
+ 
+
+
+
+@app.route('/itineraries/<int:itinerary_id>/places/<int:place_id>', methods=['DELETE'])
+def delete_place_from_itinerary(itinerary_id, place_id):
+    place = ItineraryPlace.query.filter_by(id=place_id, itinerary_id=itinerary_id).first()
+    if not place:
+        return jsonify({'message': 'Place not found in this itinerary'}), 404
+
+    try:
+        db.session.delete(place)
+        db.session.commit()
+        return jsonify({'message': 'Place deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        print(e)
+        return jsonify({'message': 'Failed to delete place'}), 500
