@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/AddToItineraryModal.css'; // Ensure the path is correct
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const CreateItineraryModal = ({ show, onClose, onCreate }) => {
     const [newItineraryName, setNewItineraryName] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false); // State for loading indicator
 
     const axiosInstance = axios.create({
         baseURL: process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000',
@@ -13,6 +16,7 @@ const CreateItineraryModal = ({ show, onClose, onCreate }) => {
 
     const handleCreateItinerary = async () => {
         if (newItineraryName) {
+            setLoading(true); // Set loading to true before API call
             try {
                 // Create new itinerary
                 const response = await axiosInstance.post('/itineraries', { name: newItineraryName });
@@ -34,10 +38,12 @@ const CreateItineraryModal = ({ show, onClose, onCreate }) => {
 
                 // Reset state and close modal
                 setNewItineraryName('');
+                setLoading(false); // Set loading to false after successful creation
                 onClose();
             } catch (error) {
                 console.error('Error creating itinerary:', error);
                 setErrorMessage('Failed to create itinerary. Please try again.');
+                setLoading(false); // Set loading to false if there's an error
             }
         } else {
             setErrorMessage('Please enter a name for the itinerary.');
@@ -63,8 +69,13 @@ const CreateItineraryModal = ({ show, onClose, onCreate }) => {
                         <button
                             onClick={handleCreateItinerary}
                             className="create-button"
+                            disabled={loading} // Disable button when loading
                         >
-                            Create
+                            {loading ? (
+                                <FontAwesomeIcon icon={faSpinner} spin />
+                            ) : (
+                                'Create'
+                            )}
                         </button>
                     </div>
                 </div>

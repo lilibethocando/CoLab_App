@@ -1,9 +1,135 @@
+/* Global styles */
+body {
+  font-family: Roboto, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header styles */
+.itinerary-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--primary-dark, #235778);
+  padding-top: 60px;
+  padding-bottom: 60px;
+  width: 100%;
+}
+
+.header-image {
+  width: 100%; /* Ensure each image takes up the full width of its container */
+  height: auto; /* Maintain aspect ratio */
+  box-sizing: border-box; /* Include padding in total width/height calculation */
+}
+.header-text {
+  color: var(--Color-Neutral-white, #FFF);
+  font-family: Roboto;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+/* Content container */
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  padding-left:20px;
+}
+
+/* Search container */
+.search-container {
+  flex: 1;
+  margin-right: 10px;
+  padding-bottom: 20px;
+}
+
+input.search-input {
+  background-color: #ffffff;  background-color: #ffffff !important;
+}
+
+
+.search-input {
+  width: 450px;
+  height: 45px;
+  border-radius: 10px;
+  border: 2px solid #999;
+  background: #ffffff;
+  padding: 10px;
+  font-size: 16px;
+}
+
+
+
+/* Filter options container */
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Individual filter container */
+.filter-container {
+  border: 2px solid black;
+  border-radius: 7px;
+  width: 180px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Dropdown styles */
+.dropdown {
+  position: relative;
+  width: 160px;
+}
+
+.dropbtn {
+  color: black;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content input[type='checkbox'] {
+  margin: 3px;
+}
+
+.dropbtn .arrow-down {
+  margin-left: 12px; /* Add margin between label and arrow */
+  font-size: 11px; 
+  vertical-align: middle;
+}
+
 /* Filter chips container */
 .selected-filters {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping to the next line if there are many filters */
-  gap: 10px; /* Space between filter chips */
-  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-left: 20px;
 }
 
 /* Individual filter chip */
@@ -16,8 +142,9 @@
   padding: 5px 10px;
   font-size: 14px;
   margin-right: 5px;
-  margin-bottom: 5px; /* Add margin-bottom for wrapping layout */
+  margin-bottom: 5px;
   font-weight: bold;
+  
 }
 
 /* Remove filter button */
@@ -29,210 +156,123 @@
   color:black;
   font-weight: bold;
   padding: 5px;
-  font-size: 16px; /* Increase font size for the 'x' icon */
-  line-height: 1; /* Ensure the 'x' icon is properly centered */
+  font-size: 16px;
+  line-height: 1;
 }
 
-/* Existing styles */
-.itinerary-header {
-display: flex;
-flex-direction: column;
-align-items: center;
-width: 100%;
-max-width: 100%;
-background: var(--primary-dark, #235778);
-padding-top: 60px; 
-padding-bottom: 60px;
-}
-
-.header-text {
-color: var(--Color-Neutral-white, #FFF);
-font-family: Roboto;
-font-size: 48px;
-font-style: normal;
-font-weight: 600;
-line-height: normal;
-text-align: center;
-margin-bottom: 50px;
-}
-
-.content-container {
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
-padding: 30px;
-}
-
-.search-input {
-width: 500px;
-height: 45px;
-border-radius: 10px;
-border: 2px solid #999;
-background: #F0F5F7;
-padding: 10px;
-font-size: 16px;
-}
-
-.search-button {
-height: 40px;
-margin-left: 10px;
-border-radius: 20px;
-border: 3px solid #999;
-background-color: #999;
-color: #000;
-font-size: 16px;
-cursor: pointer;
+.content-container2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
 }
 
 .itinerary-grid {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-grid-template-rows: repeat(2, auto);
-gap: 20px;
-padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  grid-template-rows: repeat(2, auto);
 }
 
 .itinerary-grid-item {
-background-color: #fff;
-padding: 0px;
-text-align: left;
-max-width: 700px;
-margin: 0 auto;
-border: none;
+  background-color: #fff;
+  padding: 0;
+  text-align: left;
+  border: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .itinerary-grid-item img {
-max-width: 100%;
-height: 400px;
-object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Maintain aspect ratio and cover the space */
+  height: 400px;
+
 }
 
-.itinerary-grid-item h3 {
-font-size: 16px;
-margin-top: 10px;
+
+.content-container2 .itinerary-grid-item h3 {
+  font-size: 16px;
+  margin-top: 10px;
+  text-align: left;
+  padding: 10px; /* Add padding for better appearance */
+  margin-bottom: 0; /* Remove default margin */
+  font-weight: bold; 
 }
 
+/* Image grid container */
 .image-grid-container {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 10px;
-width: 100%;
-margin-bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 0;
 }
 
 .place-item {
-position: relative;
-display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
+/* Place item */
 .add-button {
-position: absolute;
-top: 20px;
-left: 15px;
-background-color: #fff;
-padding: 8px 12px;
-border: 1px solid #ccc;
-border-radius: 20px;
-font-size: 14px;
-cursor: pointer;
-height: 40px;
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  background-color: #fff;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  height: 40px;
+  font-weight: bold; 
 }
 
-.filter-container {
-border: 2px solid black;
-border-radius: 7px;
-padding: 1px;
-margin-right: 15px;
-position: relative;
-}
-
-.dropdown {
-position: relative;
-width: 160px;
-}
-
-.dropbtn {
-color: black;
-padding: 10px;
-font-size: 16px;
-border: none;
-cursor: pointer;
-width: 100%;
-text-align: center;
-font-weight: bold;
-}
-
-.dropdown-content {
-display: none;
-position: absolute;
-background-color: #f1f1f1;
-min-width: 160px;
-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-display: block;
-}
-
-.dropdown-content input[type='checkbox'] {
-margin: 3px;
-}
-
-.search-filter-container {
-display: flex;
-padding: 0 20px;
-align-items: flex-start;
-}
-
-.search-container {
-flex: 1;
-margin-right: 10px;
-}
-
+/* Modal styles */
 .modal {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
-z-index: 1000;
-display: flex;
-justify-content: center;
-align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-main {
-background-color: white;
-padding: 20px;
-border-radius: 5px;
-width: 300px;
-height: 300px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .display-block {
-display: block;
+  display: block;
 }
 
 .display-none {
-display: none;
+  display: none;
 }
 
-
-/* Load More button container */
+/* Load more button container */
 .load-more-container {
   display: flex;
   justify-content: center;
   margin: 20px 0;
 }
 
-/* Load More button styling */
+/* Load more button styling */
 .load-more-button {
   padding: 10px 20px;
   background-color: #235778;
@@ -250,4 +290,117 @@ display: none;
   margin: 20px 0;
   font-size: 18px;
   color: #666;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.loading-overlay .fa-spinner {
+  color: #333; /* Adjust spinner color */
+}
+
+
+@media (max-width: 768px) {
+
+  .itinerary-header {
+    padding-top: 20px; /* Adjust padding top */
+    padding-bottom: 20px; /* Adjust padding bottom */
+  }
+
+  .header-text {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .itinerary-header .image-grid-container img {
+    display: none; /* Hide all images by default on smaller screens */
+  }
+  
+  .itinerary-header .image-grid-container img:nth-child(-n+2) {
+    display: block; /* Show the first two images on smaller screens */
+    max-width: 100%; /* Ensure images take full width */
+    height: auto; /* Maintain aspect ratio */
+    margin: 0 auto; /* Center align images */
+  }
+.search-input {
+    max-width: 250px;
+    height: 35px;
+    font-size: 12px;
+  }
+
+
+  .dropbtn {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .itinerary-grid-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+   .add-button {
+    position: absolute;
+    top: 10px; 
+    left: 5px; 
+    background-color: #fff;
+    padding: 6px 10px; 
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    font-size: 10px; 
+    cursor: pointer;
+    height: 30px; 
+    width: 80%;
+    font-weight: bold;
+  }
+  .dropdown-content {
+    width: 100%; /* Make the dropdown full width on smaller screens */
+    max-width: 250px; /* Set a maximum width if needed */
+    top: 100%; /* Position below the button */
+    left: 0; /* Align with the button */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Adjust box shadow for smaller screens */
+    border-radius: 8px; /* Maintain rounded corners */
+  }
+
+  .dropdown-content label {
+    padding: 10px 20px; /* Increase padding for better touch targets on smaller screens */
+    font-size: 14px; /* Increase font size for better readability */
+  }
+}
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  .itinerary-header {
+    padding-top: 20px; /* Adjust padding top */
+    padding-bottom: 20px; /* Adjust padding bottom */
+  }
+
+  .header-text {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .itinerary-header .image-grid-container img {
+    display: none; /* Hide all images by default on smaller screens */
+  }
+  
+  .itinerary-header .image-grid-container img:nth-child(-n+3) {
+    display: block; /* Show the first three images on screens between 768px and 1024px */
+    max-width: 100%; /* Ensure images take full width */
+    height: auto; /* Maintain aspect ratio */
+    margin: 0 auto; /* Center align images */
+  }
 }

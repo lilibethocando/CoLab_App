@@ -70,4 +70,8 @@ button:focus-visible {
 .background-image {
   background-image: url('./assets/bg_si_su.png');
   background-size: cover;
+  background-color: #F0F5F7;
+}
+.body{
+  background-color: #F0F5F7;
 }

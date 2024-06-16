@@ -71,7 +71,7 @@ const Destinations = () => {
                                     src={destination.img}
                                     alt={destination.place}
                                 />
-                                <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-xl font-semibold p-4">
+                                <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-xl font-semibold p-3">
                                     {destination.place}
                                 </div>
                             </div>

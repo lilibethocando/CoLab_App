@@ -126,13 +126,13 @@ const ItineraryDetail = () => {
                     <div className="w-full h-24 bg-white flex items-center justify-between px-14">
                         <h1 className="text-2xl">{itinerary.name}</h1>
                         <div className="flex items-center gap-4">
-                            <button onClick={handleSave} className="button rounded-lg" style={{ background: '#ECBB40' }}>
+                            <button onClick={handleSave} className="button rounded-lg">
                                 <SaveIcon className="h-5 w-5 mr-1 text-black" />Save
                             </button>
-                            <button onClick={handleDownload} className="button rounded-lg" style={{ background: '#ECBB40' }}>
+                            <button onClick={handleDownload} className="button rounded-lg">
                                 <DownloadIcon className="h-5 w-5 mr-1 text-black" />Download
                             </button>
-                            <button onClick={handleShare} className="button rounded-lg" style={{ background: '#ECBB40' }}>
+                            <button onClick={handleShare} className="button rounded-lg">
                                 <ShareIcon className="h-5 w-5 mr-1 text-black" />Share
                             </button>
                         </div>
@@ -157,7 +157,6 @@ const ItineraryDetail = () => {
                                         value={place.day || ''}
                                         onChange={(e) => handleDayChange(place.id, index, e.target.value)}
                                     />
-                                    <CalendarIcon className="h-5 w-5 absolute right-3 top-3 text-gray-400 pointer-events-none" />
                                 </div>
                                 <small className="text-gray-500 mt-2">Format: YYYY-MM-DD</small>
                                 <button
