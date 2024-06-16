@@ -198,7 +198,19 @@
     margin-left: auto; /* Align button to the right */
 }
 
-/* AddToItineraryModal.css */
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust height as needed */
+}
+
+/* Spinner Icon */
+.loading-spinner {
+    font-size: 24px; /* Adjust size as needed */
+    animation: spin 1s infinite linear;
+}
 
 @keyframes fade-in {
     from {
@@ -207,4 +219,59 @@
     to {
         opacity: 1;
     }
+}
+
+/* Small screens (phones, 480px and below) */
+@media (max-width: 480px) {
+    .add-to-itinerary-modal-content,
+    .create-itinerary-modal-content {
+        width: 90%; /* Adjusted width for smaller screens */
+        max-width: 90%; /* Maximum width for smaller screens */
+        max-height: 90%; /* Maximum height for smaller screens */
+        padding: 10px; /* Adjusted padding */
+    }
+
+    .add-to-itinerary-modal .itinerary-list {
+        display: flex;
+        flex-direction: column; /* Stack items vertically */
+        gap: 10px; /* Space between items */
+    }
+
+    .add-to-itinerary-modal .itinerary-item {
+        width: 100%; /* Full width for each item */
+        text-align: center; /* Center align text */
+        margin-bottom: 10px; /* Bottom margin for spacing */
+    }
+
+    .add-to-itinerary-modal .itinerary-item img {
+        width: 100%; /* Full width for images */
+        height: auto; /* Allow images to adjust height */
+        object-fit: cover; /* Cover the container */
+    }
+
+    .add-to-itinerary-modal button {
+        width: 100%; /* Full width for the button */
+        max-width: 100%; /* Ensure button doesn't exceed container width */
+        font-size: 14px; /* Adjust font size for smaller screens */
+        padding: 10px 20px; /* Adjust padding */
+        margin: 10px 0; /* Adjust margin */
+    }
+}
+
+/* Medium screens (tablets, 768px and below) */
+@media (max-width: 768px) {
+    .add-to-itinerary-modal-content,
+    .create-itinerary-modal-content {
+        width: 70%; /* Adjusted width for medium screens */
+        max-width: 80%; /* Maximum width for medium screens */
+        max-height: 80%; /* Maximum height for medium screens */
+        padding: 15px; /* Adjusted padding */
+    }
+
+    .add-to-itinerary-modal .itinerary-list {
+        grid-template-columns: repeat(2, 1fr); /* Two columns layout */
+        gap: 15px; /* Gap between items */
+    }
+
+    /* Button styles remain the same as default */
 }

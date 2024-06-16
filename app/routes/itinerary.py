@@ -11,6 +11,7 @@ from sqlalchemy import or_
 
 API_KEY = 'AIzaSyARNOpZX6eVHWb2Ao1_q1IM1nRLs4xNdWc' 
 
+
 def get_popular_destinations(city, categories):
     popular_destinations = []
     url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
@@ -37,21 +38,70 @@ def get_popular_destinations(city, categories):
         for place in results:
             place_name = place.get('name', 'Unnamed Place')
             formatted_address = place.get('formatted_address', 'Address not available')
+            phone_number = 'Phone number not available'
+            opening_hours = []
+            price_level = 'Price level not available'
+            website = 'Website not available'
+            photo_url = ''
 
+            # Check if place_id is available
+            place_id = place.get('place_id')
+            if place_id:
+                # Fetch additional details using place_id
+                place_details = get_place_details(place_id, API_KEY)
+                phone_number = place_details.get('phone_number', 'Phone number not available')
+                opening_hours = place_details.get('opening_hours', [])
+                price_level = place_details.get('price_level', 'Price level not available')
+                website = place_details.get('website', 'Website not available')
+            
+            # Handle photo URL if available
             photo_reference = place.get('photos', [])[0].get('photo_reference', '') if place.get('photos') else ''
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={API_KEY}"
+            if photo_reference:
+                photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={API_KEY}"
             
             place_details = {
                 'name': place_name,
                 'address': formatted_address,
+                'phone_number': phone_number,
+                'opening_hours': opening_hours,
+                'price_level': price_level,
+                'website': website,
                 'photo_url': photo_url
             }
             popular_destinations.append(place_details)
-            
-
-            
 
     return popular_destinations
+
+def get_place_details(place_id, API_KEY):
+    details_url = "https://maps.googleapis.com/maps/api/place/details/json"
+    details_params = {
+        'place_id': place_id,
+        'key': API_KEY
+    }
+    details_response = requests.get(details_url, params=details_params)
+    
+    if details_response.status_code == 200:
+        details = details_response.json().get('result', {})
+
+        formatted_phone_number = details.get('formatted_phone_number', 'Phone number not available')
+        opening_hours = details.get('opening_hours', {}).get('weekday_text', [])
+        price_level = details.get('price_level', 'Price level not available')
+        website = details.get('website', 'Website not available')
+
+        return {
+            'phone_number': formatted_phone_number,
+            'opening_hours': opening_hours,
+            'price_level': price_level,
+            'website': website
+        }
+    else:
+        return {
+            'phone_number': 'Phone number not available',
+            'opening_hours': [],
+            'price_level': 'Price level not available',
+            'website': 'Website not available'
+        }
+
 
 
 

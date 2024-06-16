@@ -6,6 +6,9 @@ import ItineraryHeader from "../components/ItineraryHeader";
 import AddToItineraryModal from '../components/AddToItineraryModal';
 import PlaceDetailsModal from '../components/PlaceDetailsModal';
 import "../styles/ItineraryPage.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 
 const axiosInstance = axios.create({
     baseURL: process.env.NODE_ENV === 'production' ? 'https://colab-app.onrender.com' : 'http://localhost:5000',
@@ -124,182 +127,185 @@ const ItineraryPage = () => {
     return (
         <div>
             <ItineraryHeader />
-            <div className="content-container">
-                <div className="search-container">
-                    <form onSubmit={(e) => e.preventDefault()}>
-                        <input
-                            type="text"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            placeholder="Search city"
-                            className="search-input"
-                        />
-                    </form>
-                </div>
-                <div className="filter-container">
-                    <div className="dropdown">
-                        <button className="dropbtn">Arts & Culture <span className="arrow-down">&#9660;</span></button>
-                        <div className="dropdown-content">
-                            <input
-                                type="checkbox"
-                                id="museums"
-                                name="museums"
-                                value="museums"
-                                checked={checkboxState['museums'] || false}
-                                onChange={() => handleCheckboxChange('museums')}
-                            />
-                            <label htmlFor="museums">Museums</label><br />
-                            <input
-                                type="checkbox"
-                                id="artGalleries"
-                                name="artGalleries"
-                                value="artGalleries"
-                                checked={checkboxState['artGalleries'] || false}
-                                onChange={() => handleCheckboxChange('artGalleries')}
-                            />
-                            <label htmlFor="artGalleries">Art Galleries</label><br />
-                            <input
-                                type="checkbox"
-                                id="theatre"
-                                name="theatre"
-                                value="theatre"
-                                checked={checkboxState['theatre'] || false}
-                                onChange={() => handleCheckboxChange('theatre')}
-                            />
-                            <label htmlFor="theatre">Theatre</label><br />
-                            <input
-                                type="checkbox"
-                                id="historicalMonuments"
-                                name="historicalMonuments"
-                                value="historicalMonuments"
-                                checked={checkboxState['historicalMonuments'] || false}
-                                onChange={() => handleCheckboxChange('historicalMonuments')}
-                            />
-                            <label htmlFor="historicalMonuments">Monuments</label><br />
-                            <input
-                                type="checkbox"
-                                id="tours"
-                                name="tours"
-                                value="tours"
-                                checked={checkboxState['tours'] || false}
-                                onChange={() => handleCheckboxChange('tours')}
-                            />
-                            <label htmlFor="tours">Tours</label>
-                        </div>
-                    </div>
-                </div>
-                <div className="filter-container">
-                    <div className="dropdown">
-                        <button className="dropbtn">Outdoors <span className="arrow-down">&#9660;</span></button>
-                        <div className="dropdown-content">
-                            <input
-                                type="checkbox"
-                                id="camping"
-                                name="camping"
-                                value="camping"
-                                checked={checkboxState['camping'] || false}
-                                onChange={() => handleCheckboxChange('camping')}
-                            />
-                            <label htmlFor="camping">Camping</label><br />
-                            <input
-                                type="checkbox"
-                                id="park"
-                                name="park"
-                                value="park"
-                                checked={checkboxState['park'] || false}
-                                onChange={() => handleCheckboxChange('park')}
-                            />
-                            <label htmlFor="park">Park</label><br />
-                            <input
-                                type="checkbox"
-                                id="trail"
-                                name="trail"
-                                value="trail"
-                                checked={checkboxState['trail'] || false}
-                                onChange={() => handleCheckboxChange('trail')}
-                            />
-                            <label htmlFor="trail">Trail</label>
-                        </div>
-                    </div>
-                </div>
-                <div className="filter-container">
-                    <div className="dropdown">
-                        <button className="dropbtn">Food & Drink <span className="arrow-down">&#9660;</span></button>
-                        <div className="dropdown-content">
-                            <input
-                                type="checkbox"
-                                id="breweries"
-                                name="breweries"
-                                value="breweries"
-                                checked={checkboxState['breweries'] || false}
-                                onChange={() => handleCheckboxChange('breweries')}
-                            />
-                            <label htmlFor="breweries">Breweries</label><br />
-                            <input
-                                type="checkbox"
-                                id="wineries"
-                                name="wineries"
-                                value="wineries"
-                                checked={checkboxState['wineries'] || false}
-                                onChange={() => handleCheckboxChange('wineries')}
-                            />
-                            <label htmlFor="wineries">Wineries</label><br />
-                            <input
-                                type="checkbox"
-                                id="restaurants"
-                                name="restaurants"
-                                value="restaurants"
-                                checked={checkboxState['restaurants'] || false}
-                                onChange={() => handleCheckboxChange('restaurants')}
-                            />
-                            <label htmlFor="restaurants">Restaurants</label><br />
-                            <input
-                                type="checkbox"
-                                id="coffee-shops"
-                                name="coffee-shops"
-                                value="coffee-shops"
-                                checked={checkboxState['coffee-shops'] || false}
-                                onChange={() => handleCheckboxChange('coffee-shops')}
-                            />
-                            <label htmlFor="coffee-shops">Coffee Shops</label>
-                        </div>
-                    </div>
-                </div>
-                <div className="filter-container">
-                    <div className="dropdown">
-                        <button className="dropbtn">Time Filter <span className="arrow-down">&#9660;</span></button>
-                        <div className="dropdown-content">
-                            <input
-                                type="checkbox"
-                                id="morning"
-                                name="timeFilter"
-                                value="morning"
-                                checked={checkboxState['morning'] || false}
-                                onChange={() => handleCheckboxChange('morning')}
-                            />
-                            <label htmlFor="morning">Morning</label><br />
-                            <input
-                                type="checkbox"
-                                id="afternoon"
-                                name="timeFilter"
-                                value="afternoon"
-                                checked={checkboxState['afternoon'] || false}
-                                onChange={() => handleCheckboxChange('afternoon')}
-                            />
-                            <label htmlFor="afternoon">Afternoon</label><br />
-                            <input
-                                type="checkbox"
-                                id="night"
-                                name="timeFilter"
-                                value="night"
-                                checked={checkboxState['night'] || false}
-                                onChange={() => handleCheckboxChange('night')}
-                            />
-                            <label htmlFor="night">Night</label><br />
-                        </div>
-                    </div>
+<div className="content-container">
+    <div className="search-container">
+        <form onSubmit={(e) => e.preventDefault()}>
+            <input
+                type="text"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                placeholder="Search city" 
+                className="search-input"
+                />
+        </form>
+    </div>
+    <div className="filter-options">
+        <div className="filter-container">
+            <div className="dropdown">
+                <button className="dropbtn">Arts & Culture <span className="arrow-down">&#9660;</span></button>
+                <div className="dropdown-content">
+                    <input
+                        type="checkbox"
+                        id="museums"
+                        name="museums"
+                        value="museums"
+                        checked={checkboxState['museums'] || false}
+                        onChange={() => handleCheckboxChange('museums')}
+                    />
+                    <label htmlFor="museums">Museums</label><br />
+                    <input
+                        type="checkbox"
+                        id="artGalleries"
+                        name="artGalleries"
+                        value="artGalleries"
+                        checked={checkboxState['artGalleries'] || false}
+                        onChange={() => handleCheckboxChange('artGalleries')}
+                    />
+                    <label htmlFor="artGalleries">Art Galleries</label><br />
+                    <input
+                        type="checkbox"
+                        id="theatre"
+                        name="theatre"
+                        value="theatre"
+                        checked={checkboxState['theatre'] || false}
+                        onChange={() => handleCheckboxChange('theatre')}
+                    />
+                    <label htmlFor="theatre">Theatre</label><br />
+                    <input
+                        type="checkbox"
+                        id="historicalMonuments"
+                        name="historicalMonuments"
+                        value="historicalMonuments"
+                        checked={checkboxState['historicalMonuments'] || false}
+                        onChange={() => handleCheckboxChange('historicalMonuments')}
+                    />
+                    <label htmlFor="historicalMonuments">Monuments</label><br />
+                    <input
+                        type="checkbox"
+                        id="tours"
+                        name="tours"
+                        value="tours"
+                        checked={checkboxState['tours'] || false}
+                        onChange={() => handleCheckboxChange('tours')}
+                    />
+                    <label htmlFor="tours">Tours</label>
                 </div>
             </div>
+        </div>
+        <div className="filter-container">
+            <div className="dropdown">
+                <button className="dropbtn">Outdoors <span className="arrow-down">&#9660;</span></button>
+                <div className="dropdown-content">
+                    <input
+                        type="checkbox"
+                        id="camping"
+                        name="camping"
+                        value="camping"
+                        checked={checkboxState['camping'] || false}
+                        onChange={() => handleCheckboxChange('camping')}
+                    />
+                    <label htmlFor="camping">Camping</label><br />
+                    <input
+                        type="checkbox"
+                        id="park"
+                        name="park"
+                        value="park"
+                        checked={checkboxState['park'] || false}
+                        onChange={() => handleCheckboxChange('park')}
+                    />
+                    <label htmlFor="park">Park</label><br />
+                    <input
+                        type="checkbox"
+                        id="trail"
+                        name="trail"
+                        value="trail"
+                        checked={checkboxState['trail'] || false}
+                        onChange={() => handleCheckboxChange('trail')}
+                    />
+                    <label htmlFor="trail">Trail</label>
+                </div>
+            </div>
+        </div>
+        <div className="filter-container">
+            <div className="dropdown">
+                <button className="dropbtn">Food & Drink <span className="arrow-down">&#9660;</span></button>
+                <div className="dropdown-content">
+                    <input
+                        type="checkbox"
+                        id="breweries"
+                        name="breweries"
+                        value="breweries"
+                        checked={checkboxState['breweries'] || false}
+                        onChange={() => handleCheckboxChange('breweries')}
+                    />
+                    <label htmlFor="breweries">Breweries</label><br />
+                    <input
+                        type="checkbox"
+                        id="wineries"
+                        name="wineries"
+                        value="wineries"
+                        checked={checkboxState['wineries'] || false}
+                        onChange={() => handleCheckboxChange('wineries')}
+                    />
+                    <label htmlFor="wineries">Wineries</label><br />
+                    <input
+                        type="checkbox"
+                        id="restaurants"
+                        name="restaurants"
+                        value="restaurants"
+                        checked={checkboxState['restaurants'] || false}
+                        onChange={() => handleCheckboxChange('restaurants')}
+                    />
+                    <label htmlFor="restaurants">Restaurants</label><br />
+                    <input
+                        type="checkbox"
+                        id="coffee-shops"
+                        name="coffee-shops"
+                        value="coffee-shops"
+                        checked={checkboxState['coffee-shops'] || false}
+                        onChange={() => handleCheckboxChange('coffee-shops')}
+                    />
+                    <label htmlFor="coffee-shops">Coffee Shops</label>
+                </div>
+            </div>
+        </div>
+        <div className="filter-container">
+            <div className="dropdown">
+                <button className="dropbtn">Day/Night <span className="arrow-down">&#9660;</span></button>
+                <div className="dropdown-content">
+                    <input
+                        type="checkbox"
+                        id="morning"
+                        name="timeFilter"
+                        value="morning"
+                        checked={checkboxState['morning'] || false}
+                        onChange={() => handleCheckboxChange('morning')}
+                    />
+                    <label htmlFor="morning">Morning</label><br />
+                    <input
+                        type="checkbox"
+                        id="afternoon"
+                        name="timeFilter"
+                        value="afternoon"
+                        checked={checkboxState['afternoon'] || false}
+                        onChange={() => handleCheckboxChange('afternoon')}
+                    />
+                    <label htmlFor="afternoon">Afternoon</label><br />
+                    <input
+                        type="checkbox"
+                        id="night"
+                        name="timeFilter"
+                        value="night"
+                        checked={checkboxState['night'] || false}
+                        onChange={() => handleCheckboxChange('night')}
+                    />
+                    <label htmlFor="night">Night</label><br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
             {/* Render selected filter chips */}
             <div className="selected-filters">
                 {selectedFilters.map((filter, index) => (
@@ -311,33 +317,40 @@ const ItineraryPage = () => {
             </div>
             {/* Loading message and itinerary grid */}
             {loading ? (
-                <div>Loading...</div>
+                <div className="loading-overlay">
+                    <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+                </div>
             ) : (
                 <>
-                    <div className="content-container">
+                    <div className="content-container2">
                         <div className="itinerary-grid">
                             {places.slice(0, visiblePlacesCount).map((place, index) => (
-                                <div key={index} className="itinerary-grid-item">
-                                    <div className="place-item">
-                                        <button className="add-button" onClick={() => handleAddToItinerary(place)}>Add to Itinerary</button>
-                                        {place.photo_url ? (
-                                            <img src={place.photo_url} alt={place.name} onClick={() => handlePlaceImageClick(place)} />
-                                        ) : (
-                                            <div onClick={() => handlePlaceImageClick(place)}>No Image Available</div>
-                                        )}
-                                    </div>
-                                    <h3 className="place-name">{place.name}</h3>
+                            <div key={index} className="itinerary-grid-item">
+                                <div className="place-item">
+                                <button className="add-button" onClick={() => handleAddToItinerary(place)}>Add to Itinerary</button>
+                                {place.photo_url ? (
+                                    <img src={place.photo_url} alt={place.name} onClick={() => handlePlaceImageClick(place)} />
+                                ) : (
+                                    <div onClick={() => handlePlaceImageClick(place)}>No Image Available</div>
+                                )}
                                 </div>
+                                <h3 className="place-name">{place.name}</h3>
+                            </div>
                             ))}
                         </div>
                     </div>
+
                     {visiblePlacesCount < places.length ? (
                         <div className="load-more-container">
                             <button onClick={handleLoadMore} className="load-more-button">Load More</button>
                         </div>
                     ) : (
-                        <div className="no-more-places">No more places to load</div>
+                        // Show this message only when all places are loaded
+                        visiblePlacesCount === places.length && (
+                            <div className="no-more-places">No more places to load</div>
+                        )
                     )}
+
                 </>
             )}
             <AddToItineraryModal

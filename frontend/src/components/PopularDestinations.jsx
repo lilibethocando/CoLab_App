@@ -9,15 +9,14 @@ export const PopularDestinations = () => {
     };
 
     return (
-        <div className="w-full h-full relative p-8" style={{background: '#235778'}}>
-            <div className="absolute text-white text-5xl font-semibold left-6 top-4">
+        <div className="w-full relative p-8" style={{ background: '#235778', height: '80vh' }}>
+            <div className="absolute text-white text-5xl font-semibold left-6 top-6">
                 <h2>Popular Destinations</h2>
             </div>
             <div className="absolute text-white text-2xl font-medium left-6 top-20">
-                <h4>Explore some of the most popular places to travel</h4> 
+                <h4>Explore some of the most popular places to travel</h4>
             </div>
-            {/* Apply Tailwind classes for flexbox layout */}
-            <div className="grid grid-cols-3 gap-9 absolute w-full left-0 top-48 p-8">
+            <div className="grid grid-cols-3 gap-9 absolute w-full left-0 top-32 p-8">
                 {[
                     { place: 'Colorado', img: '/colorado.jpeg' },
                     { place: 'Hawaii', img: '/hawaii.jpeg' },
@@ -28,25 +27,22 @@ export const PopularDestinations = () => {
                 ].map((destination, index) => (
                     <div key={index} className="relative">
                         <img
-                            className="w-full h-56 object-cover shadow-lg"
+                            className="w-full h-56 object-cover shadow-lg rounded-lg"
                             src={destination.img}
                             alt={destination.place}
                         />
-                        <div className="absolute left-5 bottom-2 text-white text-xl font-semibold">
+                        <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-xl font-semibold p-3">
                             {destination.place}
                         </div>
                     </div>
-                    
                 ))}
-                
             </div>
-            <div className="flex justify-center items-end h-screen">
-                <button onClick={handleButtonClick} className="px-8 py-2 bg-gray-200 rounded-lg flex justify-center items-center">
-                    <div className="text-black text-xl font-medium">View More Destinations</div>
+            <div className="absolute bottom-4 w-full flex justify-center">
+                <button onClick={handleButtonClick} className="px-8 py-2 bg-gray-200 rounded-md flex justify-center items-center mb-4">
+                    <div className="text-black text-base font-medium">View More Destinations</div>
                 </button>
             </div>
         </div>
-        
     );
 };
 
