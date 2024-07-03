@@ -7,9 +7,10 @@ from app.models import Itinerary, ItineraryPlace, Note, Date
 from datetime import datetime
 from io import StringIO, BytesIO
 import csv
-from sqlalchemy import or_ 
+from sqlalchemy import or_
+import os
 
-API_KEY = 'AIzaSyARNOpZX6eVHWb2Ao1_q1IM1nRLs4xNdWc' 
+api_key = os.getenv('API_KEY')
 
 
 def get_popular_destinations(city, categories):
@@ -24,7 +25,7 @@ def get_popular_destinations(city, categories):
     # Set up the parameters for the API request
     params = {
         'query': query,
-        'key': API_KEY
+        'key': api_key
     }
 
     # Make the request to the Google Places API
@@ -48,7 +49,7 @@ def get_popular_destinations(city, categories):
             place_id = place.get('place_id')
             if place_id:
                 # Fetch additional details using place_id
-                place_details = get_place_details(place_id, API_KEY)
+                place_details = get_place_details(place_id, api_key)
                 phone_number = place_details.get('phone_number', 'Phone number not available')
                 opening_hours = place_details.get('opening_hours', [])
                 price_level = place_details.get('price_level', 'Price level not available')
@@ -57,7 +58,7 @@ def get_popular_destinations(city, categories):
             # Handle photo URL if available
             photo_reference = place.get('photos', [])[0].get('photo_reference', '') if place.get('photos') else ''
             if photo_reference:
-                photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={API_KEY}"
+                photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
             
             place_details = {
                 'name': place_name,
