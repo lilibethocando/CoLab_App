@@ -24,6 +24,7 @@ dist-ssr
 */flask_session/
 test.py
 Singapore.csv
+flask_session/
 
 # Editor directories and files
 .vscode/*
