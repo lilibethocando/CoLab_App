@@ -21,7 +21,7 @@ dist
 dist-ssr
 *.local
 */static/assets/
-flask_session/
+*/flask_session/
 test.py
 Singapore.csv
 
