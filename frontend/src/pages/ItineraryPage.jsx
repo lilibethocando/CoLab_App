@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { debounce } from 'lodash';
 import Footer from "../components/Footer";
 import ItineraryHeader from "../components/ItineraryHeader";
 import AddToItineraryModal from '../components/AddToItineraryModal';
@@ -47,29 +48,30 @@ const ItineraryPage = () => {
         checkLoginStatus();
     }, [navigate]);
 
-    useEffect(() => {
-        const fetchPlaces = async () => {
+    const debouncedSearch = useCallback(
+        debounce((term) => {
             setLoading(true);
-            try {
-                const response = await axiosInstance.post('/itinerary_search', { 
-                    city: searchTerm,
-                    categories: selectedFilters,
-                });
+            axiosInstance.post('/itinerary_search', { 
+                city: term,
+                categories: selectedFilters,
+            }).then(response => {
                 if (response.data && response.data.places) {
                     setPlaces(response.data.places);
-                } else {
-                    console.error('Invalid response data:', response.data);
                 }
-            } catch (error) {
-                console.error('Error fetching filtered places:', error);
-            }
-            setLoading(false);
-        };
+                setLoading(false);
+            }).catch(error => {
+                console.error('Error fetching places:', error);
+                setLoading(false);
+            });
+        }, 400),
+        [selectedFilters]
+    );
 
-        if (searchTerm && searchTerm.trim() !== '') {
-            fetchPlaces();
+    useEffect(() => {
+        if (searchTerm.trim() !== '') {
+            debouncedSearch(searchTerm);
         }
-    }, [searchTerm, selectedFilters]);
+    }, [searchTerm, debouncedSearch]);
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);

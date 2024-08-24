@@ -5,6 +5,8 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_session import Session
 from config import Config
+import logging
+import sys
 import os
 
 
@@ -25,6 +27,8 @@ app.secret_key = os.environ.get('SECRET_KEY')
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # app.register_blueprint(itinerary_bp)
 

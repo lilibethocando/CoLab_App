@@ -4,13 +4,32 @@ from . import itinerary_bp
 import requests
 from app import db, app
 from app.models import Itinerary, ItineraryPlace, Note, Date
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import StringIO, BytesIO
 import csv
 from sqlalchemy import or_
 import os
+import sys
+import logging
 
 api_key = os.getenv('API_KEY')
+
+
+# Simple in-memory cache with timeout
+cache = {}
+CACHE_TIMEOUT = timedelta(hours=1)  # Cache results for 1 hour
+
+# Initialize the logging configuration
+logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Global counter for API requests
+api_request_counter = 0
+
+def increment_request_counter():
+    global api_request_counter
+    api_request_counter += 1
+    logging.info(f"API Request Count: {api_request_counter}")
 
 
 def get_popular_destinations(city, categories):
@@ -28,8 +47,9 @@ def get_popular_destinations(city, categories):
         'key': api_key
     }
 
-    # Make the request to the Google Places API
+    # Make a single request to the Google Places API
     response = requests.get(url, params=params)
+    increment_request_counter()  # Increment counter on each request
 
     # Check if the response is successful
     if response.status_code == 200:
@@ -39,69 +59,55 @@ def get_popular_destinations(city, categories):
         for place in results:
             place_name = place.get('name', 'Unnamed Place')
             formatted_address = place.get('formatted_address', 'Address not available')
-            phone_number = 'Phone number not available'
-            opening_hours = []
-            price_level = 'Price level not available'
-            website = 'Website not available'
-            photo_url = ''
-
-            # Check if place_id is available
             place_id = place.get('place_id')
-            if place_id:
-                # Fetch additional details using place_id
-                place_details = get_place_details(place_id, api_key)
-                phone_number = place_details.get('phone_number', 'Phone number not available')
-                opening_hours = place_details.get('opening_hours', [])
-                price_level = place_details.get('price_level', 'Price level not available')
-                website = place_details.get('website', 'Website not available')
-            
-            # Handle photo URL if available
-            photo_reference = place.get('photos', [])[0].get('photo_reference', '') if place.get('photos') else ''
-            if photo_reference:
-                photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
-            
+
             place_details = {
                 'name': place_name,
                 'address': formatted_address,
-                'phone_number': phone_number,
-                'opening_hours': opening_hours,
-                'price_level': price_level,
-                'website': website,
-                'photo_url': photo_url
+                'phone_number': 'Phone number not available',
+                'opening_hours': [],
+                'price_level': 'Price level not available',
+                'website': 'Website not available',
+                'photo_url': ''
             }
+
+            # If place_id is available, fetch additional details
+            if place_id:
+                details = get_place_details(place_id, api_key)
+                place_details.update(details)
+            
+            # Handle photo URL if available
+            if place.get('photos'):
+                photo_reference = place['photos'][0].get('photo_reference', '')
+                if photo_reference:
+                    place_details['photo_url'] = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+            
             popular_destinations.append(place_details)
 
     return popular_destinations
 
-def get_place_details(place_id, API_KEY):
+
+def get_place_details(place_id, api_key):
     details_url = "https://maps.googleapis.com/maps/api/place/details/json"
     details_params = {
         'place_id': place_id,
-        'key': API_KEY
+        'fields': 'formatted_phone_number,opening_hours,price_level,website',
+        'key': api_key
     }
     details_response = requests.get(details_url, params=details_params)
+    increment_request_counter()  # Increment counter on each request
     
     if details_response.status_code == 200:
         details = details_response.json().get('result', {})
 
-        formatted_phone_number = details.get('formatted_phone_number', 'Phone number not available')
-        opening_hours = details.get('opening_hours', {}).get('weekday_text', [])
-        price_level = details.get('price_level', 'Price level not available')
-        website = details.get('website', 'Website not available')
-
         return {
-            'phone_number': formatted_phone_number,
-            'opening_hours': opening_hours,
-            'price_level': price_level,
-            'website': website
+            'phone_number': details.get('formatted_phone_number', 'Phone number not available'),
+            'opening_hours': details.get('opening_hours', {}).get('weekday_text', []),
+            'price_level': details.get('price_level', 'Price level not available'),
+            'website': details.get('website', 'Website not available')
         }
     else:
-        return {
-            'phone_number': 'Phone number not available',
-            'opening_hours': [],
-            'price_level': 'Price level not available',
-            'website': 'Website not available'
-        }
+        return {}
 
 
 
@@ -112,15 +118,24 @@ def get_place_details(place_id, API_KEY):
 @cross_origin(supports_credentials=True)
 def itinerary_search():
     data = request.json
-    city = data.get('city')  # Get the city from the request data
-    categories = data.get('categories', [])  # Get the categories from the request data, default to empty list
-    time_filter = data.get('time_filter')  #this line added
+    city = data.get('city')
+    categories = tuple(sorted(data.get('categories', [])))  # Convert list to tuple for hashing
     
-    if city:
-        popular_destinations = get_popular_destinations(city, categories)
-        return jsonify({'places': popular_destinations})
-    else:
+    if not city:
         return jsonify({'error': 'City not provided'})
+
+    cache_key = (city, categories)
+    current_time = datetime.now()
+
+    if cache_key in cache:
+        cached_data, timestamp = cache[cache_key]
+        if current_time - timestamp < CACHE_TIMEOUT:
+            return jsonify({'places': cached_data})
+
+    popular_destinations = get_popular_destinations(city, list(categories))
+    cache[cache_key] = (popular_destinations, current_time)
+    
+    return jsonify({'places': popular_destinations})
     
 
 
